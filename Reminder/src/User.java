@@ -1,10 +1,15 @@
 import java.util.*;
 
+/*
+ * Potentially change hashMap of string array list to hashmap of 
+ * medicine array list, need to implement equal and hashcode inside medicine
+ */
 public class User {
-	//Name of User
+	// Name of User
 	private String userName;
-	
-	//A hash map of a string which represents the name of the medicine and an arrayList of Alarm
+
+	// A hash map of a string which represents the name of the medicine and an
+	// arrayList of Alarm
 	private HashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
 
 	public User(String userName) {
@@ -63,7 +68,7 @@ public class User {
 	 * seconds.
 	 */
 	public void recursiveCheckAlarm() {
-		Timer time = new Timer(); 
+		Timer time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
