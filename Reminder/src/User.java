@@ -26,7 +26,7 @@ public class User {
 	}
 
 	/*
-	 * Check if the medicine is already ex
+	 * Check if the medicine is already exists
 	 */
 	public void addMedicine(String name) {
 		if (medTime.containsKey(name))
