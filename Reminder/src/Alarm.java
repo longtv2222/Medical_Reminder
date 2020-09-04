@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 
 public class Alarm {
+	
 	private int hour;
 	private int minute;
 	private boolean recursive; // If the alarm is repeated, this will be set to true
