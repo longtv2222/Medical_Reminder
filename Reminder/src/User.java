@@ -10,11 +10,11 @@ public class User {
 
 	// A hash map of a string which represents the name of the medicine and an
 	// arrayList of Alarm
-	private HashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
+	private HashMap<Medicine, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
 
 	public User(String userName) {
 		this.setUserName(userName);
-		medTime = new HashMap<String, ArrayList<Alarm>>();
+		medTime = new HashMap<Medicine, ArrayList<Alarm>>();
 	}
 
 	public String getUserName() {
@@ -29,32 +29,35 @@ public class User {
 	 * Check if the medicine is already exists
 	 */
 	public void addMedicine(String name) {
-		if (medTime.containsKey(name))
+		Medicine med = new Medicine(name);
+		if (medTime.containsKey(med))
 			System.out.println("The key already exists");
 		else
-			medTime.put(name, new ArrayList<Alarm>());
+			medTime.put(med, new ArrayList<Alarm>());
 	}
 
 	public void addingAlarm(String name, Alarm alarm) {
-		if (medTime.containsKey(name)) {
-			medTime.get(name).add(alarm);
+		Medicine med = new Medicine(name);
+		if (medTime.containsKey(med)) {
+			medTime.get(med).add(alarm);
 		} else {
 			System.out.println("Could not find medicine with name " + name);
 		}
 	}
 
 	public void showAllMedicine() {
-		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
+		for (Map.Entry<Medicine, ArrayList<Alarm>> entry : medTime.entrySet()) {
 			System.out.println(entry.getKey());
 		}
 	}
 
 	public void printAllAlarm(String name) {
-		if (!medTime.containsKey(name))
+		Medicine med = new Medicine(name);
+		if (!medTime.containsKey(med))
 			System.out.println("The key does not exist");
 		else {
 			int count = 1;
-			for (Alarm iterate : medTime.get(name)) {
+			for (Alarm iterate : medTime.get(med)) {
 				System.out.println("Alarm " + count);
 				System.out.println("Hour: " + iterate.getHour() + " Minute: " + iterate.getMinute());
 				System.out.println();
@@ -71,7 +74,7 @@ public class User {
 		Timer time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
+				for (Map.Entry<Medicine, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm iterator : entry.getValue()) {
 						iterator.notification();
 					}
