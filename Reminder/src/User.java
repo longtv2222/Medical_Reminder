@@ -74,6 +74,11 @@ public class User {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm iterator : entry.getValue()) {
 						iterator.notification();
+						if (iterator.isRing() == true) {
+							System.out.println(iterator.getHour() + " :" + iterator.getMinute() + " It is time to drink "
+									+ entry.getKey());
+							iterator.setRing(false); // After the alarm goes off, set the variable ring to false.
+						}
 					}
 				}
 			}

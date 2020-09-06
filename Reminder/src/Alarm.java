@@ -1,16 +1,20 @@
 import java.time.LocalDateTime;
 
 public class Alarm {
-	
+
 	private int hour;
 	private int minute;
 	private boolean recursive; // If the alarm is repeated, this will be set to true
-	private String alarmMsg; // Message of the alarm
+
+	// The variable ring is true only before notification is sent, after
+	// notification is sent, it will be false.
+	private boolean ring;
 
 	public Alarm(int hour, int minute, boolean recursive) {
 		this.hour = hour;
 		this.minute = minute;
 		this.recursive = recursive;
+		this.setRing(false);
 	}
 
 	public void setAlarm(int hour, int minute) {
@@ -29,7 +33,7 @@ public class Alarm {
 		int curr_minute = now.getMinute();
 
 		if (hour == curr_hour && minute == curr_minute) {
-			System.out.println("TIME TO DRINK YOUR MED");
+			ring = true; // Alarm goes off thus ring is true.
 		}
 	}
 
@@ -43,5 +47,13 @@ public class Alarm {
 
 	public int getMinute() {
 		return this.minute;
+	}
+
+	public boolean isRing() {
+		return ring;
+	}
+
+	public void setRing(boolean ring) {
+		this.ring = ring;
 	}
 }

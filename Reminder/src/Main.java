@@ -19,6 +19,7 @@ public class Main {
 				user.showAllMedicine();
 				break;
 			case 2:
+				System.out.println("Please enter the name of the med");
 				medName = scanner.nextLine();
 				user.addMedicine(medName);
 				break;
