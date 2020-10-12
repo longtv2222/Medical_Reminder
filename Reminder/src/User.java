@@ -2,7 +2,7 @@ import java.util.*;
 
 /*
  * Potentially change hashMap of string array list to hashmap of 
- * medicine array list, need to implement equal and hashcode inside medicine
+ * medicine array list, need to implement equal and hashcode inside medicine.
  */
 public class User {
 	// Name of User
