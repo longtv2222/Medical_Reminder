@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {  //Potentially has to use multithreading for this application.
 		User user = new User("Long");
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);

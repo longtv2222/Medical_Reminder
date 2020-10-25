@@ -8,7 +8,6 @@ public class DBManager {
 	private static boolean hasData = false;
 
 	public static Connection dbConnector() {
-
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:DBSM.sqlite");
@@ -70,7 +69,21 @@ public class DBManager {
 
 			}
 		}
-
+	}
+	
+	
+	private void createMedicineTable() throws SQLException {
+		Statement state = conn.createStatement();
+		state.execute("CREATE TABLE Medicine(med_id integer,med_name varchar(60), primary key(med_id));");
+	}
+	
+	private void createAlarmTable() throws SQLException {
+		Statement state = conn.createStatement();
+		state.execute("CREATE TABLE Alarm(id integer,fname varchar(60), primary key(id));");
+	}
+	
+	private void createUserTable() {
+		
 	}
 
 	public static void main(String[] args) {

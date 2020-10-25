@@ -34,7 +34,7 @@ public class Alarm {
 		int curr_minute = now.getMinute();
 
 		if (hour == curr_hour && minute == curr_minute) {
-			ring = true; // Alarm goes off thus ring is true.
+			setRing(true); // Alarm goes off thus ring is true.
 		}
 	}
 
