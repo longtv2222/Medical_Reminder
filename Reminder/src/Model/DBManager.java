@@ -1,3 +1,4 @@
+package Model;
 import javax.swing.*;
 import java.sql.*;
 
@@ -63,8 +64,10 @@ public class DBManager {
 				prep2.setString(2, "Paul");
 				prep2.setString(3, "Smith");
 				prep2.execute();
+				
+				PreparedStatement prep3 = conn.prepareStatement("INSERT INTO user (id,fname,lName) VALUES (3,'LONG','TA');");
+				prep3.execute();
 
-				Statement state3 = conn.createStatement();
 			}
 		}
 
