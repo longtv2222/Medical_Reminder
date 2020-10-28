@@ -5,11 +5,9 @@ import java.sql.*;
 public class DBManager {
 
 	private static Connection conn = null;
-	private static boolean hasData = false;
 
 	public static Connection dbConnector() {
 		try {
-			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:DBSM.sqlite");
 			return conn;
 		} catch (Exception e) {
@@ -18,83 +16,42 @@ public class DBManager {
 		}
 	}
 
-	private void getConnection() throws SQLException, ClassNotFoundException {
+	public void getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
-		conn = DriverManager.getConnection("jdbc:sqlite:DBSM.sqlite");
-		initialise();
-	}
-
-	public ResultSet displayUsers() {
-		try {
-			if (conn == null) {
-				getConnection();
-			}
-
-			Statement state = conn.createStatement();
-			ResultSet res = state.executeQuery("SELECT fname, lname FROM user");
-			return res;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+		conn = dbConnector();
+			initialise();
 	}
 
 	private void initialise() throws SQLException {
-		if (!hasData) {
-			hasData = true;
-			Statement state = conn.createStatement();
-			ResultSet res = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='user'");
-			if (!res.next()) {
-				System.out.println("Building database");
-
-				Statement state2 = conn.createStatement();
-				state2.execute("CREATE TABLE user(id integer,fname varchar(60),lName varchar(60), primary key(id));");
-
-				PreparedStatement prep = conn.prepareStatement("INSERT INTO user values(?,?,?);");
-
-				prep.setString(2, "John");
-				prep.setString(3, "McNeil");
-				prep.execute();
-
-				PreparedStatement prep2 = conn.prepareStatement("INSERT INTO user values(?,?,?);");
-				prep2.setString(2, "Paul");
-				prep2.setString(3, "Smith");
-				prep2.execute();
-				
-				PreparedStatement prep3 = conn.prepareStatement("INSERT INTO user (id,fname,lName) VALUES (3,'LONG','TA');");
-				prep3.execute();
-
-			}
-		}
+		createAlarmTable();
+		System.out.println("Create");
+		createMedicineTable();
+		createUserTable();
 	}
 	
 	
 	private void createMedicineTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE Medicine(med_id integer,med_name varchar(60), primary key(med_id));");
+		state.execute("CREATE TABLE if not exists Medicine(med_id integer,med_name varchar(60), primary key(med_id));");
 	}
 	
 	private void createAlarmTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE Alarm(id integer,fname varchar(60), primary key(id));");
+		state.execute("CREATE TABLE if not exists Alarm(id integer,fname varchar(60), primary key(id));");
 	}
 	
-	private void createUserTable() {
-		
+	private void createUserTable() throws SQLException {
+		Statement state = conn.createStatement();
+		state.execute("CREATE TABLE if not exists user(id integer,fname varchar(60),lName varchar(60), primary key(id));");
 	}
 
 	public static void main(String[] args) {
-		DBManager test = new DBManager();
-		ResultSet rs = test.displayUsers();
 		try {
-			while (rs.next()) {
-				System.out.println(rs.getString("fname") + rs.getString("lname"));
-			}
+			DBManager test = new DBManager();
+			test.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
