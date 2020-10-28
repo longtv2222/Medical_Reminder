@@ -1,9 +1,22 @@
 package Model;
-import java.util.Scanner;
+import java.sql.SQLException;
+import java.util.*;
 
 public class Main {
-
+	
 	public static void main(String[] args) {  //Potentially has to use multithreading for this application.
+		DBManager db = new DBManager();
+		try {
+			db.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<User> user_list = new ArrayList<User>();
+		db.loadUserData(user_list);
+		
 		User user = new User("Long");
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);

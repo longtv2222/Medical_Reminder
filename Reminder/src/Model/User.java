@@ -8,6 +8,7 @@ import java.util.*;
 public class User {
 	// Name of User
 	private String userName;
+	private int id;
 
 	// A hash map of a string which represents the name of the medicine and an
 	// arrayList of Alarm

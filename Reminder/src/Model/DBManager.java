@@ -1,5 +1,6 @@
 package Model;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 //This class is responsible for creating tables if tables haven't been created.
@@ -38,19 +39,23 @@ public class DBManager {
 	//If table hasn't existed, create it
 	private void createMedicineTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE if not exists Medicine(med_id integer,med_name varchar(60),val INTEGER, unit varchar(5), primary key(med_id));");
+		state.execute("CREATE TABLE if not exists Medicine(med_id integer, user_id integer, med_name varchar(60), primary key(med_id), FOREIGN KEY(user_id) REFERENCES User(id));");
 	}
 	
 	//If table hasn't existed, create it
 	private void createAlarmTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE if not exists Alarm(id integer,med_id integer, alarm_name varchar(60), primary key(id),FOREIGN KEY(med_id) REFERENCES Medicine(med_id));");
+		state.execute("CREATE TABLE if not exists Alarm(id integer,med_id integer, alarm_name varchar(60),val INTEGER, unit varchar(5), primary key(id),FOREIGN KEY(med_id) REFERENCES Medicine(med_id));");
 	}
 	
 	//If table hasn't existed, create it
 	private void createUserTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE if not exists user(id integer,fname varchar(60),lName varchar(60), primary key(id));");
+		state.execute("CREATE TABLE if not exists User(id integer,fname varchar(60),lName varchar(60), primary key(id));");
+	}
+	
+	public void populateData() {
+		
 	}
 
 	public static void main(String[] args) {
@@ -62,6 +67,20 @@ public class DBManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	
+	private void loadUserMedicineData(int user_id) {
+		
+	}
+	
+	private void loadAlarmMedicineData(int user_id,int med_id) {
+		
+	}
+	
+	public void loadUserData(ArrayList<User> user_list) {
+
+		
 	}
 
 }

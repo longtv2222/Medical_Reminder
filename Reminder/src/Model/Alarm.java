@@ -5,6 +5,8 @@ public class Alarm {
 
 	private int hour;
 	private int minute;
+	private double val;
+	private String unit;
 	private boolean recursive; // If the alarm is repeated, this will be set to true
 
 	// The variable ring is true only before notification is sent, after
