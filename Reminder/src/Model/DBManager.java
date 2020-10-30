@@ -2,7 +2,7 @@ package Model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
 
 
 //This class is responsible for creating tables if tables haven't been created.
