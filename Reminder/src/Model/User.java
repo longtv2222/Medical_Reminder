@@ -14,11 +14,16 @@ public class User {
 	// arrayList of Alarm
 	private HashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
 
-	public User(String userName) {
+	public User(String userName,int id) {
 		this.setUserName(userName);
 		medTime = new HashMap<String, ArrayList<Alarm>>();
+		this.id = id;
 	}
-
+	
+	public HashMap<String, ArrayList<Alarm>> getMedTime() {
+		return this.medTime;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -86,5 +91,7 @@ public class User {
 			}
 		}, 0, 60000);
 	}
+	
+	
 
 }

@@ -7,27 +7,21 @@ public class Alarm {
 	private int minute;
 	private double val;
 	private String unit;
-	private boolean recursive; // If the alarm is repeated, this will be set to true
+
 
 	// The variable ring is true only before notification is sent, after
 	// notification is sent, it will be false.
 	private boolean ring;
 
-	public Alarm(int hour, int minute, boolean recursive) {
+	public Alarm(int hour, int minute,double val,String unit) {
 		this.hour = hour;
 		this.minute = minute;
-		this.recursive = recursive;
 		this.setRing(false);
 	}
 
 	public void setAlarm(int hour, int minute) {
 		this.hour = hour;
 		this.minute = minute;
-		recursive = true;
-	}
-
-	public void setMode(boolean mode) {
-		recursive = mode;
 	}
 
 	public void notification() {
@@ -40,9 +34,6 @@ public class Alarm {
 		}
 	}
 
-	public boolean isCheck() {
-		return recursive;
-	}
 
 	public int getHour() {
 		return this.hour;

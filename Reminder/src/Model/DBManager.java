@@ -1,6 +1,8 @@
 package Model;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 //This class is responsible for creating tables if tables haven't been created.
@@ -45,7 +47,7 @@ public class DBManager {
 	//If table hasn't existed, create it
 	private void createAlarmTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE if not exists Alarm(id integer,med_id integer, alarm_name varchar(60),val INTEGER, unit varchar(5), primary key(id),FOREIGN KEY(med_id) REFERENCES Medicine(med_id));");
+		state.execute("CREATE TABLE if not exists Alarm(id integer,user_id integer, med_id integer, alarm_name varchar(60),val INTEGER, unit varchar(5), primary key(id),FOREIGN KEY(med_id) REFERENCES Medicine(med_id));");
 	}
 	
 	//If table hasn't existed, create it
@@ -57,30 +59,36 @@ public class DBManager {
 	public void populateData() {
 		
 	}
-
-	public static void main(String[] args) {
-		try {
-			DBManager test = new DBManager();
-			test.getConnection();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	
+	//Load user medicine into hashmap of user and call loadAlarmMedicine method.
+	private void loadUserMedicineData(int user_id,HashMap<String, ArrayList<Alarm>> medTime) throws SQLException {
+		Statement state = conn.createStatement();
+		ResultSet rs = state.executeQuery("SELECT * FROM Medicine WHERE user_id = "+ user_id);
+		
+		while(rs.next()) {
+			medTime.put(rs.getString("med_name"), new ArrayList<Alarm>()); //Create new key and intialize alarm at this key.
+			ArrayList<Alarm> time = medTime.get(rs.getString("med_name"));
+			loadAlarmMedicineData(time,user_id,rs.getInt("med_id"));
 		}
 	}
-
 	
-	private void loadUserMedicineData(int user_id) {
+	private void loadAlarmMedicineData(ArrayList<Alarm> time, int user_id,int med_id) throws SQLException {
+		Statement state = conn.createStatement();
+		ResultSet rs = state.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id+" AND med_id = "+med_id+";");
+		
+		while(rs.next()) {
+			
+		}
 		
 	}
 	
-	private void loadAlarmMedicineData(int user_id,int med_id) {
-		
-	}
-	
-	public void loadUserData(ArrayList<User> user_list) {
-
-		
+	public void loadUserData(ArrayList<User> user_list) throws SQLException {
+//		Statement state = conn.createStatement();
+//		ResultSet rs = state.executeQuery("SELECT * FROM User");
+//		while(rs.next()) {
+//			user_list.add(new User(rs.getString("fname") +" "+ rs.getString("lname"),rs.getInt("id")));
+//			loadUserMedicineData(rs.getInt("id"),user_list.get(user_list.size() - 1).getMedTime());
+//		}
 	}
 
 }
