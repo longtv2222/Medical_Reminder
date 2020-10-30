@@ -47,7 +47,8 @@ public class DBManager {
 	//If table hasn't existed, create it
 	private void createAlarmTable() throws SQLException {
 		Statement state = conn.createStatement();
-		state.execute("CREATE TABLE if not exists Alarm(id integer,user_id integer, med_id integer, alarm_name varchar(60),val INTEGER, unit varchar(5), primary key(id),FOREIGN KEY(med_id) REFERENCES Medicine(med_id));");
+		state.execute("CREATE TABLE if not exists Alarm(id integer,user_id integer, med_id integer, alarm_name varchar(60),hour INTEGER, minute Integer, val INTEGER, unit varchar(5), primary key(id),"
+				+ "FOREIGN KEY(med_id) REFERENCES Medicine(med_id),FOREIGN KEY(user_id) REFERENCES User(id));");
 	}
 	
 	//If table hasn't existed, create it
@@ -77,18 +78,18 @@ public class DBManager {
 		ResultSet rs = state.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id+" AND med_id = "+med_id+";");
 		
 		while(rs.next()) {
-			
+			time.add(new Alarm(rs.getInt("hour"),rs.getInt("minute"),rs.getDouble("val"),rs.getString("unit")));
 		}
 		
 	}
 	
 	public void loadUserData(ArrayList<User> user_list) throws SQLException {
-//		Statement state = conn.createStatement();
-//		ResultSet rs = state.executeQuery("SELECT * FROM User");
-//		while(rs.next()) {
-//			user_list.add(new User(rs.getString("fname") +" "+ rs.getString("lname"),rs.getInt("id")));
-//			loadUserMedicineData(rs.getInt("id"),user_list.get(user_list.size() - 1).getMedTime());
-//		}
+		Statement state = conn.createStatement();
+		ResultSet rs = state.executeQuery("SELECT * FROM User");
+		while(rs.next()) {
+			user_list.add(new User(rs.getString("fname") +" "+ rs.getString("lname"),rs.getInt("id")));
+			loadUserMedicineData(rs.getInt("id"),user_list.get(user_list.size() - 1).getMedTime());
+		}
 	}
 
 }

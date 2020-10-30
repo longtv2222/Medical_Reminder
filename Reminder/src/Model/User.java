@@ -69,6 +69,18 @@ public class User {
 			}
 		}
 	}
+	
+	public void printAllAlarm() {
+		int count = 1;
+		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
+			for(Alarm hour : entry.getValue()) {
+				System.out.println("Alarm " + count);
+				System.out.println("Hour: " + hour.getHour() + " Minute: " + hour.getMinute());
+				System.out.println();
+				count++;
+			}
+		}
+	}
 
 	/*
 	 * This function check if you have an alarm at current time or not every 30

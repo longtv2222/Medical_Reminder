@@ -1,15 +1,22 @@
 package Model;
+
 import java.sql.SQLException;
 import java.util.*;
 
 public class Main {
-	
-	public static void main(String[] args) {  //Potentially has to use multithreading for this application.
-		DBManager db = new DBManager();
+
+	public static void main(String[] args) { // Potentially has to use multithreading for this application.
 		try {
+			DBManager db = new DBManager();
+
 			db.getConnection();
 			ArrayList<User> user_list = new ArrayList<User>();
 			db.loadUserData(user_list);
+
+			for (User user : user_list) {
+				System.out.println(user.getUserName());
+				user.printAllAlarm();
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
