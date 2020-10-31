@@ -5,9 +5,7 @@ import java.io.File;
 import javafx.application.Application;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Sound extends Application  {
 	 public static void main(String[] args) {
