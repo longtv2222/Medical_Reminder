@@ -1,29 +1,29 @@
 package Model;
-import java.util.*;
 
-/*
- * Potentially change hashMap of string array list to hashmap of 
- * medicine array list, need to implement equal and hashcode inside medicine.
- */
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class User implements Runnable {
 	// Name of User
 	private String userName;
-	private int id;
+	// id of user.
+	private final int id;
 
 	// A hash map of a string which represents the name of the medicine and an
 	// arrayList of Alarm
-	private HashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
+	private ConcurrentHashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
+	private Ringtone ringtone;
 
-	public User(String userName,int id) {
+	public User(String userName, int id) {
 		this.setUserName(userName);
-		medTime = new HashMap<String, ArrayList<Alarm>>();
+		medTime = new ConcurrentHashMap<String, ArrayList<Alarm>>();
 		this.id = id;
 	}
-	
-	public HashMap<String, ArrayList<Alarm>> getMedTime() {
+
+	public ConcurrentHashMap<String, ArrayList<Alarm>> getMedTime() {
 		return this.medTime;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
@@ -69,11 +69,11 @@ public class User implements Runnable {
 			}
 		}
 	}
-	
+
 	public void printAllAlarm() {
 		int count = 1;
 		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
-			for(Alarm hour : entry.getValue()) {
+			for (Alarm hour : entry.getValue()) {
 				System.out.println("Alarm " + count);
 				System.out.println("Hour: " + hour.getHour() + " Minute: " + hour.getMinute());
 				System.out.println();
@@ -94,8 +94,8 @@ public class User implements Runnable {
 					for (Alarm iterator : entry.getValue()) {
 						iterator.notification();
 						if (iterator.isRing() == true) {
-							System.out.println(iterator.getHour() + " :" + iterator.getMinute() + " It is time to drink "
-									+ entry.getKey());
+							System.out.println(iterator.getHour() + " :" + iterator.getMinute()
+									+ " It is time to drink " + entry.getKey());
 							iterator.setRing(false); // After the alarm goes off, set the variable ring to false.
 						}
 					}
@@ -104,11 +104,13 @@ public class User implements Runnable {
 		}, 0, 60000);
 	}
 
+	// What if recursiveCheckAlarm() and add function come at the same time? We need
+	// a way to grant access to 1
+	// Method only
+
 	@Override
 	public void run() {
 		this.recursiveCheckAlarm();
 	}
-	
-	
 
 }

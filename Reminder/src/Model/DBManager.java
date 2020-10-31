@@ -2,6 +2,7 @@ package Model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -57,18 +58,14 @@ public class DBManager {
 		state.execute("CREATE TABLE if not exists User(id integer,fname varchar(60),lName varchar(60), primary key(id));");
 	}
 	
-	public void populateData() {
-		
-	}
-	
 	//Load user medicine into hashmap of user and call loadAlarmMedicine method.
-	private void loadUserMedicineData(int user_id,HashMap<String, ArrayList<Alarm>> medTime) throws SQLException {
+	private void loadUserMedicineData(int user_id,ConcurrentHashMap<String, ArrayList<Alarm>> concurrentHashMap) throws SQLException {
 		Statement state = conn.createStatement();
 		ResultSet rs = state.executeQuery("SELECT * FROM Medicine WHERE user_id = "+ user_id);
 		
 		while(rs.next()) {
-			medTime.put(rs.getString("med_name"), new ArrayList<Alarm>()); //Create new key and intialize alarm at this key.
-			ArrayList<Alarm> time = medTime.get(rs.getString("med_name"));
+			concurrentHashMap.put(rs.getString("med_name"), new ArrayList<Alarm>()); //Create new key and intialize alarm at this key.
+			ArrayList<Alarm> time = concurrentHashMap.get(rs.getString("med_name"));
 			loadAlarmMedicineData(time,user_id,rs.getInt("med_id"));
 		}
 	}

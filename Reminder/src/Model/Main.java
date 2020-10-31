@@ -5,9 +5,17 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Main {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application {
 
 	public static void main(String[] args) { // Potentially has to use multithreading for this application.
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage arg0) throws Exception {
 		try {
 			DBManager db = new DBManager();
 			db.getConnection();
@@ -23,9 +31,10 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		  User user = new User("Long",2); 
-		  ExecutorService executor = Executors.newSingleThreadExecutor();  //Create a thread for user to recursively check alarm ring
-		  executor.execute(user);
+		User user = new User("Long", 2);
+		ExecutorService executor = Executors.newSingleThreadExecutor(); // Create a thread for user to recursively check
+																		// alarm ring
+		executor.execute(user);
 
 		int option = 0;
 		Scanner scanner = new Scanner(System.in);
