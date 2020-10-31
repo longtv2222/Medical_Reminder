@@ -5,7 +5,7 @@ import java.util.*;
  * Potentially change hashMap of string array list to hashmap of 
  * medicine array list, need to implement equal and hashcode inside medicine.
  */
-public class User {
+public class User implements Runnable {
 	// Name of User
 	private String userName;
 	private int id;
@@ -102,6 +102,11 @@ public class User {
 				}
 			}
 		}, 0, 60000);
+	}
+
+	@Override
+	public void run() {
+		this.recursiveCheckAlarm();
 	}
 	
 	
