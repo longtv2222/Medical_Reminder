@@ -4,13 +4,12 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	public static void main(String[] args) { // Potentially has to use multithreading for this application.
+	public static void main(String[] args) {
 		launch(args);
 	}
 

@@ -12,7 +12,6 @@ public class User implements Runnable {
 	// A hash map of a string which represents the name of the medicine and an
 	// arrayList of Alarm
 	private ConcurrentHashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
-	private Ringtone ringtone;
 
 	public User(String userName, int id) {
 		this.setUserName(userName);
@@ -93,20 +92,11 @@ public class User implements Runnable {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm iterator : entry.getValue()) {
 						iterator.notification();
-						if (iterator.isRing() == true) {
-							System.out.println(iterator.getHour() + " :" + iterator.getMinute()
-									+ " It is time to drink " + entry.getKey());
-							iterator.setRing(false); // After the alarm goes off, set the variable ring to false.
-						}
 					}
 				}
 			}
 		}, 0, 60000);
 	}
-
-	// What if recursiveCheckAlarm() and add function come at the same time? We need
-	// a way to grant access to 1
-	// Method only
 
 	@Override
 	public void run() {
