@@ -30,7 +30,7 @@ public class Alarm {
 
 			if (hour == curr_hour && minute == curr_minute) {
 				ringtone.play();
-				Thread.sleep(30000);
+				Thread.sleep(30000);  //Play for 30s then stop.
 				ringtone.stop();
 			}
 		} catch (InterruptedException e) {

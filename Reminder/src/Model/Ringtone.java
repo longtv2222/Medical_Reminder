@@ -14,6 +14,16 @@ public class Ringtone {
 		audio = new AudioClip(b.getSource());
 	}
 
+	void setRingtone(String path) {
+		this.location = new File(path);
+		if (location.exists()) {
+			Media b = new Media(location.toURI().toString());
+			audio = new AudioClip(b.getSource());
+		} else {
+			System.out.println("Path does not exist");
+		}
+	}
+
 	public void play() {
 		audio.play();
 	}
