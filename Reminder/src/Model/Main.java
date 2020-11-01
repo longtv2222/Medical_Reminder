@@ -59,7 +59,7 @@ public class Main extends Application {
 				medName = scanner.nextLine();
 
 				System.out.println("Please enter the hour");
-				int hour = scanner.nextInt();//2
+				int hour = scanner.nextInt();//24
 				scanner.nextLine();
 
 				System.out.println("Please enter the minute");
