@@ -32,8 +32,8 @@ public class Main extends Application {
 		}
 
 		User user = new User("Long", 2);
+
 		ExecutorService executor = Executors.newSingleThreadExecutor(); // Create a thread for user to recursively check
-																		// alarm ring
 		executor.execute(user);
 
 		int option = 0;

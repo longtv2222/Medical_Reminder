@@ -1,7 +1,10 @@
 package Model;
 
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+
 
 public class User implements Runnable {
 	// Name of User
@@ -12,13 +15,13 @@ public class User implements Runnable {
 	// A hash map of a string which represents the name of the medicine and an
 	// arrayList of Alarm
 	private ConcurrentHashMap<String, ArrayList<Alarm>> medTime; // Each medicine has a list of alarm.
-	private Ringtone ringtone;
-
+	
 	public User(String userName, int id) {
 		this.setUserName(userName);
 		medTime = new ConcurrentHashMap<String, ArrayList<Alarm>>();
 		this.id = id;
 	}
+
 
 	public ConcurrentHashMap<String, ArrayList<Alarm>> getMedTime() {
 		return this.medTime;
@@ -87,21 +90,17 @@ public class User implements Runnable {
 	 * seconds.
 	 */
 	public void recursiveCheckAlarm() {
+
 		Timer time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm iterator : entry.getValue()) {
-						iterator.notification();
-						if (iterator.isRing() == true) {
-							System.out.println(iterator.getHour() + " :" + iterator.getMinute()
-									+ " It is time to drink " + entry.getKey());
-							iterator.setRing(false); // After the alarm goes off, set the variable ring to false.
-						}
+						iterator.notification(entry.getKey());
 					}
 				}
 			}
-		}, 0, 60000);
+		}, 0, 30000);
 	}
 
 	// What if recursiveCheckAlarm() and add function come at the same time? We need

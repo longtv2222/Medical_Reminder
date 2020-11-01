@@ -7,18 +7,15 @@ public class Alarm {
 	private int minute;
 	private double val;
 	private String unit;
+	private Ringtone ringtone;
 
-
-	// The variable ring is true only before notification is sent, after
-	// notification is sent, it will be false.
-	private boolean ring;
 
 	public Alarm(int hour, int minute,double val,String unit) {
 		this.hour = hour;
 		this.minute = minute;
 		this.val = val;
-		this.unit = unit;
-		this.setRing(false);
+		this.unit = unit;;
+		ringtone = new Ringtone();
 	}
 
 	public void setAlarm(int hour, int minute) {
@@ -26,13 +23,14 @@ public class Alarm {
 		this.minute = minute;
 	}
 
-	public void notification() {
+	public void notification(String medName) {
 		LocalDateTime now = LocalDateTime.now();
 		int curr_hour = now.getHour();
 		int curr_minute = now.getMinute();
 
 		if (hour == curr_hour && minute == curr_minute) {
-			setRing(true); // Alarm goes off thus ring is true.
+			System.out.println("It is time to drink");
+			ringtone.play();
 		}
 	}
 
@@ -43,13 +41,5 @@ public class Alarm {
 
 	public int getMinute() {
 		return this.minute;
-	}
-
-	public boolean isRing() {
-		return ring;
-	}
-
-	public void setRing(boolean ring) {
-		this.ring = ring;
 	}
 }
