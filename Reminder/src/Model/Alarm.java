@@ -8,9 +8,10 @@ public class Alarm {
 	private int minute;
 	private double val;
 	private String unit;
+	private String alarmName;
 	private Ringtone ringtone = new Ringtone();
 
-	public Alarm(int hour, int minute, double val, String unit) {
+	public Alarm(int hour, int minute, double val, String unit,String alarmName) {
 		this.hour = hour;
 		this.minute = minute;
 		this.val = val;

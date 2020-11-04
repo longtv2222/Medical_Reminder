@@ -64,7 +64,7 @@ public class Main extends Application {
 				System.out.println("Please enter the minute");
 				int minute = scanner.nextInt();
 				scanner.nextLine();
-				user.addingAlarm(medName, new Alarm(hour, minute, 400, "ml"));
+				user.addingAlarm(medName, new Alarm(hour, minute, 400, "ml","AA"));
 				break;
 			case 4:
 				System.out.println("Please enter the name of the med");

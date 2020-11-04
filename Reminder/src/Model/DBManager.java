@@ -74,7 +74,7 @@ public class DBManager {
 		ResultSet rs = state.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id+" AND med_id = "+med_id+";");
 		
 		while(rs.next()) {
-			time.add(new Alarm(rs.getInt("hour"),rs.getInt("minute"),rs.getDouble("val"),rs.getString("unit")));
+			time.add(new Alarm(rs.getInt("hour"),rs.getInt("minute"),rs.getDouble("val"),rs.getString("unit"),rs.getString("alarm_name")));
 		}
 		
 	}
