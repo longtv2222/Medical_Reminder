@@ -30,7 +30,7 @@ public class Alarm {
 
 			if (hour == curr_hour && minute == curr_minute) {
 				ringtone.play();
-				Thread.sleep(30000);  //Play for 30s then stop.
+				Thread.sleep(30000);  //Play for 30s then stop. Need to have a way to enable user to stop the alarm
 				ringtone.stop();
 			}
 		} catch (InterruptedException e) {
