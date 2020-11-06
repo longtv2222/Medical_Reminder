@@ -1,7 +1,6 @@
 package View;
 
-import javafx.scene.shape.Rectangle; 
-
+import javafx.scene.shape.Rectangle;
 
 import javafx.geometry.Insets;
 
@@ -20,7 +19,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-
+	private String css = getClass().getResource("Style.css").toString();
+	
 	public static void display(String title, String message, String buttonMsg) {
 		Stage window = new Stage();
 		window.initModality(Modality.APPLICATION_MODAL);
@@ -49,31 +49,33 @@ public class GUI extends Application {
 		alarmNotification("Wake up", "11", "36");
 	}
 
-	public static void alarmNotification(String alarmName, String hour, String minute) {
+	Button roundedButton(String name, int width, int height, int ArcHeight, int ArcWidth) {
 		Rectangle roundedButton = new Rectangle();
-		roundedButton.setWidth(222);
-		roundedButton.setHeight(100);
-		roundedButton.setArcHeight(60);
-		roundedButton.setArcWidth(60);
-		
-		Button turnOff = new Button("Turn off");
-		turnOff.setPrefSize(222, 100);
-		turnOff.setShape(roundedButton);
-		
-		Button snooze = new Button("Snooze");
-		snooze.setPrefSize(222, 100);
-		snooze.setShape(roundedButton);
+		roundedButton.setWidth(width);
+		roundedButton.setHeight(height);
+		roundedButton.setArcHeight(ArcHeight);
+		roundedButton.setArcWidth(ArcWidth);
 
+		Button button = new Button(name);
+		button.setPrefSize(width, height);
+		button.setShape(roundedButton);
+		return button;
+	}
 
+	public void alarmNotification(String alarmName, String hour, String minute) {
+		Button turnOff = roundedButton("Turn off", 222, 100, 60, 60);
+		Button snooze = roundedButton("Snooze", 222, 100, 60, 60);
+	
 		HBox hbox = new HBox(48);
 		hbox.setPadding(new Insets(0, 57, 79, 57));
 		hbox.setAlignment(Pos.TOP_CENTER);
 		hbox.getChildren().addAll(turnOff, snooze); // Add 2 buttons to Hbox
+		hbox.getStylesheets().add(css);
+		hbox.setId("font-button");  //Format button in this row
 
 		Text t = new Text("11:24\n2020-11-05");
 		t.setTextAlignment(TextAlignment.CENTER);
 
-		
 		BorderPane borderpane = new BorderPane();
 		borderpane.setCenter(t);
 		borderpane.setBottom(hbox);

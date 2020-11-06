@@ -1,0 +1,4 @@
+#font-button {  //Formatting the buttons inside Hbox on Alarm notification
+-fx-font-size:40;
+-fx-font-weight: bold;
+}
