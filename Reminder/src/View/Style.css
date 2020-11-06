@@ -1,4 +1,22 @@
 #font-button {  //Formatting the buttons inside Hbox on Alarm notification
--fx-font-size:40;
+-fx-background-radius: 30;
+-fx-font-size: 40;
 -fx-font-weight: bold;
+-fx-background-color: rgb(113,133,171);
+}
+
+#hbox_alarm {
+-fx-alignment: center;
+-fx-spacing: 48;
+-fx-padding:20;
+}
+
+#text_alarm {
+-fx-text-alignment: center;
+-fx-font-size: 72;
+-fx-fill: white ;
+}
+
+#border_pane_alarm {
+-fx-background-color: rgb(72,72,72);
 }

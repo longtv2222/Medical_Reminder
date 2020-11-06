@@ -50,15 +50,9 @@ public class GUI extends Application {
 	}
 
 	Button roundedButton(String name, int width, int height, int ArcHeight, int ArcWidth) {
-		Rectangle roundedButton = new Rectangle();
-		roundedButton.setWidth(width);
-		roundedButton.setHeight(height);
-		roundedButton.setArcHeight(ArcHeight);
-		roundedButton.setArcWidth(ArcWidth);
-
 		Button button = new Button(name);
 		button.setPrefSize(width, height);
-		button.setShape(roundedButton);
+		button.setId("font-button");
 		return button;
 	}
 
@@ -66,21 +60,21 @@ public class GUI extends Application {
 		Button turnOff = roundedButton("Turn off", 222, 100, 60, 60);
 		Button snooze = roundedButton("Snooze", 222, 100, 60, 60);
 	
-		HBox hbox = new HBox(48);
-		hbox.setPadding(new Insets(0, 57, 79, 57));
-		hbox.setAlignment(Pos.TOP_CENTER);
+		HBox hbox = new HBox();
 		hbox.getChildren().addAll(turnOff, snooze); // Add 2 buttons to Hbox
-		hbox.getStylesheets().add(css);
-		hbox.setId("font-button");  //Format button in this row
-
+		hbox.setId("hbox_alarm");  //Format button in this row
+		
+		
 		Text t = new Text("11:24\n2020-11-05");
-		t.setTextAlignment(TextAlignment.CENTER);
-
+		t.setId("text_alarm");
+	
 		BorderPane borderpane = new BorderPane();
+		borderpane.setId("border_pane_alarm");
 		borderpane.setCenter(t);
 		borderpane.setBottom(hbox);
 
 		Scene add = new Scene(borderpane);
+		add.getStylesheets().add(css);
 
 		Stage popup = new Stage();
 		popup.setHeight(600);
