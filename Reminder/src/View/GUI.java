@@ -1,11 +1,21 @@
 package View;
 
+import javafx.scene.shape.Rectangle; 
+
+
+import javafx.geometry.Insets;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,35 +46,46 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage arg0) throws Exception {
-		alarmNotification("Wake up","11","36");
+		alarmNotification("Wake up", "11", "36");
 	}
 
-	public static void alarmNotification(String alarmName,String hour,String minute) {
-		Button stop = new Button("Stop");
+	public static void alarmNotification(String alarmName, String hour, String minute) {
+		Rectangle roundedButton = new Rectangle();
+		roundedButton.setWidth(222);
+		roundedButton.setHeight(100);
+		roundedButton.setArcHeight(60);
+		roundedButton.setArcWidth(60);
+		
+		Button turnOff = new Button("Turn off");
+		turnOff.setPrefSize(222, 100);
+		turnOff.setShape(roundedButton);
+		
 		Button snooze = new Button("Snooze");
-		Label name = new Label(alarmName);
+		snooze.setPrefSize(222, 100);
+		snooze.setShape(roundedButton);
 
-		Stage popUp = new Stage();
-		popUp.initModality(Modality.APPLICATION_MODAL); // Block all input event to other window, person has to shut off
-														// the alarm before doing anything else.
-		popUp.setAlwaysOnTop(true);		
-		popUp.setTitle("Alarm");
-		popUp.setResizable(false);
-		popUp.setWidth(600);
-		popUp.setHeight(600);
+
+		HBox hbox = new HBox(48);
+		hbox.setPadding(new Insets(0, 57, 79, 57));
+		hbox.setAlignment(Pos.TOP_CENTER);
+		hbox.getChildren().addAll(turnOff, snooze); // Add 2 buttons to Hbox
+
+		Text t = new Text("11:24\n2020-11-05");
+		t.setTextAlignment(TextAlignment.CENTER);
+
 		
-		
-		VBox vbox = new VBox(10);
-		vbox.setAlignment(Pos.CENTER);
-		vbox.getChildren().addAll(stop,snooze);
-		
-		
-		Scene scene = new Scene(vbox);
-	
-		
-		
-		popUp.setScene(scene);
-		popUp.showAndWait();
+		BorderPane borderpane = new BorderPane();
+		borderpane.setCenter(t);
+		borderpane.setBottom(hbox);
+
+		Scene add = new Scene(borderpane);
+
+		Stage popup = new Stage();
+		popup.setHeight(600);
+		popup.setWidth(600);
+		popup.setResizable(false);
+		popup.setScene(add);
+		popup.showAndWait();
 	}
 
 }
