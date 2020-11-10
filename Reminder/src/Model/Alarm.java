@@ -16,6 +16,7 @@ public class Alarm {
 		this.minute = minute;
 		this.val = val;
 		this.unit = unit;
+		this.alarmName = alarmName;
 	}
 
 	public void setAlarm(int hour, int minute) {
