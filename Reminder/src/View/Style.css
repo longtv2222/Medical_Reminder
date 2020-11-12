@@ -33,6 +33,7 @@
     -fx-padding:30;
     -fx-alignment: center;
 }
+
 #welcome_text {
 	-fx-font-size : 30;
 	-fx-font-family: "Roboto";
@@ -42,7 +43,6 @@
 
 #subVbox {
 	-fx-background-color: #E5F1FF;
-    -fx-padding:0,30,0,0;
     -fx-spacing:30;
 }
 
@@ -56,4 +56,45 @@
     -fx-fit-to-width: true;
     -fx-max-height: 600;
     -fx-background-color:transparent;
+}
+
+#scroll_bar_center_panel {
+	-fx-vbar-policy: never;
+    -fx-fit-to-width: true;
+    -fx-max-height:500;
+    -fx-background-color:transparent;
+}
+
+#center_panel {
+	-fx-background-color: #E5F1FF;
+	-fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-max-height: 600;
+    -fx-max-width: 450;
+    -fx-padding: 30;
+}
+
+#right_panel {
+	-fx-background-color: #E5F1FF;
+	-fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-max-height: 600;
+    -fx-pref-width: 300;
+    -fx-padding:30;
+    -fx-alignment: center;
+}
+
+#center_rectangle {
+    -fx-width: 200;
+    -fx-height: 250;
+	-fx-arc-height: 60;
+	-fx-arc-width: 60;
+	-fx-fill: #FFFFFF ;	
+}
+
+#center_text {
+	-fx-font-size : 30;
+	-fx-font-family: "Roboto";
+	-fx-font-weight: bold;
+	-fx-font-alignment: center;
 }
