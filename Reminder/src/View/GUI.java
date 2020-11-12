@@ -5,7 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
+import javafx.scene.Scene;	
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
@@ -76,12 +76,26 @@ public class GUI extends Application {
 		Text noti = new Text("You need to take 30 mg of Pills");
 		grid.add(alarm, 4, 2);
 		grid.add(noti, 4, 3);
-		ToggleButton button = new ToggleButton("On");
-		grid.add(button, 10, 2);
+
+		grid.add(toggleButton(), 10, 2);
 		Rectangle rect = new Rectangle(350, 100);
 		rect.setId("center_rectangle");
 		sp.getChildren().addAll(rect, grid);
 		return sp;
+	}
+
+	private ToggleButton toggleButton() {
+		ToggleButton button = new ToggleButton();
+		button.setId("toggle_button");
+
+		button.setOnMouseClicked(e -> {
+			if (button.isSelected()) {
+				button.setId("toggle_button_clicked_action");
+			} else {
+				button.setId("toggle_button");
+			}
+		});
+		return button;
 	}
 
 	private VBox centerPanel() {
