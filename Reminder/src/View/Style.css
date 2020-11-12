@@ -1,24 +1,27 @@
 #one_rounded_button {
-  	-fx-border-radius: 30 0 30 0;
-  	-fx-background-radius: 30 0 0 30;
+  	-fx-border-radius: 30;
+  	-fx-background-radius: 30;
   	-fx-background-color: #D7E7F9;
   	-fx-font-size:20;
+	-fx-font-family: "Roboto";
 	-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,0.5), 0, 1.0, 0, 3);
 }
 
 #hover_button {
-  	-fx-border-radius: 30 0 30 0;
-  	-fx-background-radius: 30 0 0 30;
+  	-fx-border-radius: 30;
+  	-fx-background-radius: 30;
   	-fx-background-color: #A6CCFA;
- 	-fx-font-size:20;
+  	-fx-font-size:20;
+	-fx-font-family: "Roboto";
 	-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,0.5), 0, 1.0, 0, 3);
 }
 
 #pressed_button {
-  	-fx-border-radius: 30 0 30 0;
-  	-fx-background-radius: 30 0 0 30;
+  	-fx-border-radius: 30;
+  	-fx-background-radius: 30;
   	-fx-background-color: #A6CCFA;
- 	-fx-font-size:20;
+  	-fx-font-size:20;
+	-fx-font-family: "Roboto";
 }
 
 #left_panel {
@@ -27,10 +30,30 @@
     -fx-border-radius: 50px;
     -fx-max-height: 600;
     -fx-pref-width: 300;
-    -fx-alignment: top-right;
+    -fx-padding:30;
+    -fx-alignment: center;
+}
+#welcome_text {
+	-fx-font-size : 30;
+	-fx-font-family: "Roboto";
+	-fx-font-weight: bold;
+	-fx-font-alignment: center;
+}
+
+#subVbox {
+	-fx-background-color: #E5F1FF;
+    -fx-padding:0,30,0,0;
+    -fx-spacing:30;
 }
 
 #border_pane {
 	-fx-background-color: linear-gradient(to bottom right, #71BEE3, #B2CEDC);
 	-fx-padding: 50;
+}
+
+#scroll_bar_left_panel {
+	-fx-vbar-policy: never;
+    -fx-fit-to-width: true;
+    -fx-max-height: 600;
+    -fx-background-color:transparent;
 }
