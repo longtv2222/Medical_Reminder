@@ -11,12 +11,24 @@ public class Alarm {
 	private String alarmName;
 	private Ringtone ringtone = new Ringtone();
 
-	public Alarm(int hour, int minute, double val, String unit,String alarmName) {
+	public Alarm(int hour, int minute, double val, String unit, String alarmName) {
 		this.hour = hour;
 		this.minute = minute;
 		this.val = val;
 		this.unit = unit;
 		this.alarmName = alarmName;
+	}
+
+	public String getUnit() {
+		return this.unit;
+	}
+
+	public double getVal() {
+		return this.val;
+	}
+
+	public String getAlarmName() {
+		return this.alarmName;
 	}
 
 	public void setAlarm(int hour, int minute) {
@@ -32,7 +44,7 @@ public class Alarm {
 
 			if (hour == curr_hour && minute == curr_minute) {
 				ringtone.play();
-				Thread.sleep(30000);  //Play for 30s then stop. Need to have a way to enable user to stop the alarm
+				Thread.sleep(30000); // Play for 30s then stop. Need to have a way to enable user to stop the alarm
 				ringtone.stop();
 			}
 		} catch (InterruptedException e) {

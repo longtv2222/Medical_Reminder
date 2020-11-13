@@ -1,35 +1,38 @@
 package View;
 
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;	
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+
+import Model.Alarm;
+import controller.Controller;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 //Doctor appointment also
-public class GUI extends Application {
-	private String css = getClass().getResource("Style.css").toString();
+public class GUI {
+	private String css;
+	private BorderPane borderPane;
+	private Controller controller;
 
-	public static void main(String[] args) {
-		launch(args);
+	public GUI(Controller controller) {
+		borderPane = new BorderPane();
+		css = getClass().getResource("Style.css").toString();
+		this.controller = controller;
 	}
 
 	private Button oneSideRounded(String buttonName, int width, int height) {
@@ -45,7 +48,7 @@ public class GUI extends Application {
 		return button;
 	}
 
-	private VBox leftPanel() {
+	private VBox leftPanel(String userName) {
 		VBox vbox = new VBox();
 
 		vbox.setId("left_panel");
@@ -61,23 +64,29 @@ public class GUI extends Application {
 		sp.setId("scroll_bar_left_panel");
 		sp.setContent(subVbox);
 
-		Text welcome = new Text("Hi,Viet Long!\n");
+		Text welcome = new Text("Hi," + userName + "!\n");
 		welcome.setId("welcome_text");
 		vbox.getChildren().addAll(welcome, sp, subVbox);
 		return vbox;
 	}
 
-	private StackPane alarmNoti() {
+	private StackPane alarmNoti(String alarmTimeName, String alarmNote) {
 		StackPane sp = new StackPane();
 		GridPane grid = new GridPane();
+		HBox hbox = new HBox(50);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		Text alarm = new Text("WELCOME TO THE CITY OF DANVILLE");
-		Text noti = new Text("You need to take 30 mg of Pills");
-		grid.add(alarm, 4, 2);
+		Label alarm = new Label(alarmTimeName);
+		alarm.setMinWidth(220);
+
+		Label noti = new Label(alarmNote);
+
+		hbox.getChildren().addAll(alarm, toggleButton());
+
+		grid.add(hbox, 4, 2);
 		grid.add(noti, 4, 3);
 
-		grid.add(toggleButton(), 10, 2);
+//		grid.add(toggleButton(), 10, 2);
 		Rectangle rect = new Rectangle(350, 100);
 		rect.setId("center_rectangle");
 		sp.getChildren().addAll(rect, grid);
@@ -98,14 +107,17 @@ public class GUI extends Application {
 		return button;
 	}
 
-	private VBox centerPanel() {
+	private VBox centerPanel(ArrayList<StackPane> stackPane) {
 		VBox vbox = new VBox();
 		vbox.setId("center_panel");
 
 		VBox subvbox = new VBox(30);
 
 		subvbox.setId("subVbox");
-		subvbox.getChildren().addAll(alarmNoti(), alarmNoti(), alarmNoti(), alarmNoti(), alarmNoti(), alarmNoti());
+
+		for (StackPane iter : stackPane) {
+			subvbox.getChildren().add(iter);
+		}
 
 		ScrollPane sp = new ScrollPane();
 		sp.setId("scroll_bar_center_panel");
@@ -124,13 +136,8 @@ public class GUI extends Application {
 		return vbox;
 	}
 
-	@Override
-	public void start(Stage arg0) throws Exception {
-		BorderPane borderPane = new BorderPane();
+	public void createGUI() {
 		borderPane.setId("border_pane");
-
-		borderPane.setLeft(leftPanel());
-		borderPane.setCenter(centerPanel());
 		borderPane.setRight(rightPanel());
 
 		Scene homeScene = new Scene(borderPane);
@@ -141,6 +148,24 @@ public class GUI extends Application {
 		home.setHeight(720);
 		home.setScene(homeScene);
 		home.show();
+	}
+
+	public void createLeftPanel(String userName) {
+		borderPane.setLeft(leftPanel(userName));
+	}
+
+	public void createCenterPanel() {
+		ConcurrentHashMap<String, ArrayList<Alarm>> medTime = controller.getAlarmList(Controller.id);
+		ArrayList<StackPane> alarmList = new ArrayList<StackPane>();
+
+		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) { // Iterate and get All alarm
+			for (Alarm alarm : entry.getValue()) {
+				String alarmTimeName = alarm.getHour() + ":" + alarm.getMinute() + ": " + entry.getKey();
+				String alarmNote = "You need to take " + alarm.getVal() + " " + " of " + entry.getKey();
+				alarmList.add(alarmNoti(alarmTimeName, alarmNote));
+			}
+		}
+		borderPane.setCenter(centerPanel(alarmList));
 	}
 
 }

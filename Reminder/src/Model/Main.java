@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -24,64 +26,16 @@ public class Main extends Application {
 				System.out.println(user.getUserName());
 				user.printAllAlarm();
 			}
+			ExecutorService executor = Executors.newSingleThreadExecutor(); // Create a thread for user to recursively
+																			// check
+																			// alarm ring
+			Controller controller = new Controller(db, user_list);
+
+			executor.execute(user_list.get(0));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		User user = new User("Long", 2);
-		ExecutorService executor = Executors.newSingleThreadExecutor(); // Create a thread for user to recursively check
-																		// alarm ring
-		executor.execute(user);
-
-		int option = 0;
-		Scanner scanner = new Scanner(System.in);
-		boolean stop = false;
-
-		while (!stop) {
-			System.out.println("\nPlease pick your option!");
-			option = scanner.nextInt();
-			scanner.nextLine();
-			String medName;
-			switch (option) {
-			case 1:
-				user.showAllMedicine();
-				break;
-			case 2:
-				System.out.println("Please enter the name of the med");
-				medName = scanner.nextLine();
-				user.addMedicine(medName);
-				break;
-			case 3:
-				System.out.println("Please enter the name of the med");
-				medName = scanner.nextLine();
-
-				System.out.println("Please enter the hour");
-				int hour = scanner.nextInt();
-				scanner.nextLine();
-
-				System.out.println("Please enter the minute");
-				int minute = scanner.nextInt();
-				scanner.nextLine();
-				user.addingAlarm(medName, new Alarm(hour, minute, 400, "ml","AA"));
-				break;
-			case 4:
-				System.out.println("Please enter the name of the med");
-				medName = scanner.nextLine();
-				user.printAllAlarm(medName);
-				break;
-			case 5:
-				System.out.println("Bye");
-				stop = true;
-				user.recursiveCheckAlarm();
-				break;
-			default:
-				System.out.println("Instruction not avaialable");
-
-			}
-		}
-		scanner.close();
-
 	}
 }
