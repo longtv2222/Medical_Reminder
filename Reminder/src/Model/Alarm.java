@@ -10,6 +10,7 @@ public class Alarm {
 	private String unit;
 	private String alarmName;
 	private Ringtone ringtone = new Ringtone();
+	private boolean status;
 
 	public Alarm(int hour, int minute, double val, String unit, String alarmName) {
 		this.hour = hour;
@@ -17,6 +18,15 @@ public class Alarm {
 		this.val = val;
 		this.unit = unit;
 		this.alarmName = alarmName;
+		this.status = true;
+	}
+
+	public boolean getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public String getUnit() {

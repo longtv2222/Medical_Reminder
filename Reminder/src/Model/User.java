@@ -91,7 +91,8 @@ public class User implements Runnable {
 			public void run() {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm iterator : entry.getValue()) {
-						iterator.notification();
+						if (iterator.getStatus()) // Check for the status of the alarm, if it is false, it is inactive
+							iterator.notification();
 					}
 				}
 			}

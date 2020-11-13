@@ -1,18 +1,14 @@
 package View;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
 import Model.Alarm;
 import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -30,12 +26,12 @@ public class GUI {
 	private Controller controller;
 
 	public GUI(Controller controller) {
-		borderPane = new BorderPane();
+		setBorderPane(new BorderPane());
 		css = getClass().getResource("Style.css").toString();
 		this.controller = controller;
 	}
 
-	private Button oneSideRounded(String buttonName, int width, int height) {
+	public Button roundedButton(String buttonName, int width, int height) {
 		Button button = new Button(buttonName);
 		button.setPrefHeight(height);
 		button.setPrefWidth(width);
@@ -54,12 +50,10 @@ public class GUI {
 		vbox.setId("left_panel");
 		VBox subVbox = new VBox();
 		subVbox.setId("subVbox");
+		ArrayList<Button> buttonList = controller.leftPanelButtons();
 
-		subVbox.getChildren().addAll(oneSideRounded("View alarm", 300, 60), oneSideRounded("View alarm", 300, 60),
-				oneSideRounded("View alarm", 300, 60), oneSideRounded("View alarm", 300, 60),
-				oneSideRounded("View alarm", 300, 60), oneSideRounded("View alarm", 300, 60),
-				oneSideRounded("View alarm", 300, 60), oneSideRounded("View alarm", 300, 60),
-				oneSideRounded("View alarm", 300, 60));
+		subVbox.getChildren().addAll(buttonList);
+
 		ScrollPane sp = new ScrollPane();
 		sp.setId("scroll_bar_left_panel");
 		sp.setContent(subVbox);
@@ -70,7 +64,9 @@ public class GUI {
 		return vbox;
 	}
 
-	private StackPane alarmNoti(String alarmTimeName, String alarmNote) {
+
+
+	public StackPane alarmView(String alarmTimeName, String alarmNote, Alarm alarm2) {
 		StackPane sp = new StackPane();
 		GridPane grid = new GridPane();
 		HBox hbox = new HBox(50);
@@ -81,33 +77,44 @@ public class GUI {
 
 		Label noti = new Label(alarmNote);
 
-		hbox.getChildren().addAll(alarm, toggleButton());
+		hbox.getChildren().addAll(alarm, toggleButton(alarm2));
 
 		grid.add(hbox, 4, 2);
 		grid.add(noti, 4, 3);
 
-//		grid.add(toggleButton(), 10, 2);
 		Rectangle rect = new Rectangle(350, 100);
 		rect.setId("center_rectangle");
 		sp.getChildren().addAll(rect, grid);
 		return sp;
 	}
 
-	private ToggleButton toggleButton() {
-		ToggleButton button = new ToggleButton();
-		button.setId("toggle_button");
+	public StackPane medView(String medName) {
+		StackPane sp = new StackPane();
+		BorderPane bp = new BorderPane();
+		Label name = new Label(medName);
+		bp.setCenter(name);
+		Rectangle rect = new Rectangle(350, 100);
+		rect.setId("center_rectangle");
+		sp.getChildren().addAll(rect, bp);
+		return sp;
+	}
 
+	private ToggleButton toggleButton(Alarm alarm2) {
+		ToggleButton button = new ToggleButton();
+		button.setId("toggle_button_clicked_action");
 		button.setOnMouseClicked(e -> {
 			if (button.isSelected()) {
-				button.setId("toggle_button_clicked_action");
-			} else {
 				button.setId("toggle_button");
+				alarm2.setStatus(false);
+			} else {
+				button.setId("toggle_button_clicked_action");
+				alarm2.setStatus(true);
 			}
 		});
 		return button;
 	}
 
-	private VBox centerPanel(ArrayList<StackPane> stackPane) {
+	public VBox centerPanel(ArrayList<StackPane> stackPane, String centerTitle) {
 		VBox vbox = new VBox();
 		vbox.setId("center_panel");
 
@@ -115,15 +122,13 @@ public class GUI {
 
 		subvbox.setId("subVbox");
 
-		for (StackPane iter : stackPane) {
-			subvbox.getChildren().add(iter);
-		}
+		subvbox.getChildren().addAll(stackPane);
 
 		ScrollPane sp = new ScrollPane();
 		sp.setId("scroll_bar_center_panel");
 		sp.setContent(subvbox);
 
-		Text text = new Text("What to do today?\n");
+		Text text = new Text(centerTitle + "\n");
 		text.setId("center_text");
 		vbox.getChildren().addAll(text, subvbox, sp);
 
@@ -137,10 +142,10 @@ public class GUI {
 	}
 
 	public void createGUI() {
-		borderPane.setId("border_pane");
-		borderPane.setRight(rightPanel());
+		getBorderPane().setId("border_pane");
+		getBorderPane().setRight(rightPanel());
 
-		Scene homeScene = new Scene(borderPane);
+		Scene homeScene = new Scene(getBorderPane());
 		homeScene.getStylesheets().add(css);
 
 		Stage home = new Stage();
@@ -151,21 +156,19 @@ public class GUI {
 	}
 
 	public void createLeftPanel(String userName) {
-		borderPane.setLeft(leftPanel(userName));
+		getBorderPane().setLeft(leftPanel(userName));
 	}
 
 	public void createCenterPanel() {
-		ConcurrentHashMap<String, ArrayList<Alarm>> medTime = controller.getAlarmList(Controller.id);
-		ArrayList<StackPane> alarmList = new ArrayList<StackPane>();
+		controller.viewAlarm();
+	}
 
-		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) { // Iterate and get All alarm
-			for (Alarm alarm : entry.getValue()) {
-				String alarmTimeName = alarm.getHour() + ":" + alarm.getMinute() + ": " + entry.getKey();
-				String alarmNote = "You need to take " + alarm.getVal() + " " + " of " + entry.getKey();
-				alarmList.add(alarmNoti(alarmTimeName, alarmNote));
-			}
-		}
-		borderPane.setCenter(centerPanel(alarmList));
+	public BorderPane getBorderPane() {
+		return borderPane;
+	}
+
+	public void setBorderPane(BorderPane borderPane) {
+		this.borderPane = borderPane;
 	}
 
 }
