@@ -1,8 +1,6 @@
 package View;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import Model.Alarm;
 import controller.Controller;
 import javafx.scene.Scene;
@@ -30,20 +28,7 @@ public class GUI {
 		css = getClass().getResource("Style.css").toString();
 		this.controller = controller;
 	}
-
-	public Button roundedButton(String buttonName, int width, int height) {
-		Button button = new Button(buttonName);
-		button.setPrefHeight(height);
-		button.setPrefWidth(width);
-		button.setId("one_rounded_button");
-
-		button.setOnMouseEntered(e -> button.setId("hover_button"));
-		button.setOnMouseExited(e -> button.setId("one_rounded_button"));
-		button.setOnMousePressed(e -> button.setId("pressed_button"));
-		button.setOnMouseReleased(e -> button.setId("hover_button"));
-		return button;
-	}
-
+	
 	private VBox leftPanel(String userName) {
 		VBox vbox = new VBox();
 
@@ -64,9 +49,7 @@ public class GUI {
 		return vbox;
 	}
 
-
-
-	public StackPane alarmView(String alarmTimeName, String alarmNote, Alarm alarm2) {
+	public StackPane alarmView(String alarmTimeName, String alarmNote, ToggleButton button) {
 		StackPane sp = new StackPane();
 		GridPane grid = new GridPane();
 		HBox hbox = new HBox(50);
@@ -77,7 +60,7 @@ public class GUI {
 
 		Label noti = new Label(alarmNote);
 
-		hbox.getChildren().addAll(alarm, toggleButton(alarm2));
+		hbox.getChildren().addAll(alarm, button);
 
 		grid.add(hbox, 4, 2);
 		grid.add(noti, 4, 3);
@@ -99,20 +82,6 @@ public class GUI {
 		return sp;
 	}
 
-	private ToggleButton toggleButton(Alarm alarm2) {
-		ToggleButton button = new ToggleButton();
-		button.setId("toggle_button_clicked_action");
-		button.setOnMouseClicked(e -> {
-			if (button.isSelected()) {
-				button.setId("toggle_button");
-				alarm2.setStatus(false);
-			} else {
-				button.setId("toggle_button_clicked_action");
-				alarm2.setStatus(true);
-			}
-		});
-		return button;
-	}
 
 	public VBox centerPanel(ArrayList<StackPane> stackPane, String centerTitle) {
 		VBox vbox = new VBox();
