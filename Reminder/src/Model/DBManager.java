@@ -88,6 +88,8 @@ public class DBManager {
 		}
 
 	}
+	
+	//
 
 	public void loadUserData(ArrayList<User> user_list) throws SQLException {
 		Statement state = conn.createStatement();
