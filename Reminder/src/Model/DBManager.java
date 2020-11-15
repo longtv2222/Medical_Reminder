@@ -89,8 +89,7 @@ public class DBManager {
 
 	}
 	
-	//
-
+	////
 	public void loadUserData(ArrayList<User> user_list) throws SQLException {
 		Statement state = conn.createStatement();
 		ResultSet rs = state.executeQuery("SELECT * FROM User");
