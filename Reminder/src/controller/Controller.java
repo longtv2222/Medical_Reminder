@@ -25,7 +25,7 @@ public class Controller implements ModButton {
 			// Ask for user name
 		} else {
 			gui.createGUI();
-			gui.createLeftPanel(model.get_UserList().get(Model_Controller.user_id).getUserName());
+			gui.createLeftPanel(model.getUserName());
 			gui.createCenterPanel();
 		}
 	}
@@ -86,14 +86,12 @@ public class Controller implements ModButton {
 				}
 			});
 		}
-
 	}
 
 	// View alarm button
 	public void viewAlarm() {
 		ArrayList<StackPane> alarmList = new ArrayList<StackPane>();
-		for (Map.Entry<String, ArrayList<Alarm>> entry : model.get_UserList().get(Model_Controller.user_id).getMedTime()
-				.entrySet()) {
+		for (Map.Entry<String, ArrayList<Alarm>> entry : model.getMedTime().entrySet()) {
 			for (Alarm alarm : entry.getValue()) {
 				String alarmTimeName = alarm.getHour() + ":" + alarm.getMinute() + ": " + entry.getKey();
 				String alarmNote = "You need to take " + alarm.getVal() + " " + " of " + entry.getKey();
@@ -109,7 +107,7 @@ public class Controller implements ModButton {
 	// View medicine button
 	public void viewMedicine() {
 		ArrayList<StackPane> alarmList = new ArrayList<StackPane>();
-		for (String medName : model.get_UserList().get(Model_Controller.user_id).getMedTime().keySet()) {
+		for (String medName : model.getMedTime().keySet()) {
 			alarmList.add(gui.medView(medName));
 		}
 		gui.getBorderPane().setCenter(gui.centerPanel(alarmList, "Your list of alarm"));

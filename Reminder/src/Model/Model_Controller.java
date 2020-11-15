@@ -2,10 +2,11 @@ package Model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 public class Model_Controller {
-	public static int user_id = 0; 
+	public static int user_id = 0;
 	private DBManager db;
 	private ArrayList<User> user_list;
 
@@ -36,4 +37,16 @@ public class Model_Controller {
 		return this.db;
 	}
 
+	public String getUserName() {
+		return user_list.get(Model_Controller.user_id).getUserName();
+	}
+
+	public ConcurrentHashMap<String, ArrayList<Alarm>> getMedTime() {
+		return user_list.get(Model_Controller.user_id).getMedTime();
+	}
+
+	public void addAlarm(String name, Alarm alarm) {
+		user_list.get(Model_Controller.user_id).addingAlarm(name, alarm);
+		// Also need to update database.
+	}
 }
