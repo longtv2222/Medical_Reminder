@@ -4,7 +4,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import Model.Model_Controller;
-import View.GUI_Controller;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;

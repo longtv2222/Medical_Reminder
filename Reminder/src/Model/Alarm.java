@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Alarm {
 
+
 	private int hour;
 	private int minute;
 	private double val;
@@ -69,4 +70,5 @@ public class Alarm {
 	public int getMinute() {
 		return this.minute;
 	}
+
 }

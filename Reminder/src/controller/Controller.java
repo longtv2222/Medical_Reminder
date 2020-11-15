@@ -6,11 +6,12 @@ import Model.Alarm;
 import Model.Model_Controller;
 import View.GUI;
 import View.ModButton;
+import View.UtilityWindow;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
 
-public class Controller implements ModButton {
+public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
 	private Model_Controller model;
 
@@ -113,8 +114,13 @@ public class Controller implements ModButton {
 		gui.getBorderPane().setCenter(gui.centerPanel(alarmList, "Your list of alarm"));
 	}
 
-	// Add alarm button
+	// Add alarm button with existing med name
 	public void addAlarm() {
+		Button cancel = this.roundedButton("Cancel", 300, 60);
+		Button back = this.roundedButton("Back", 300, 60);
+		Button next = this.roundedButton("Next", 300, 60);
+		Button confirm = this.roundedButton("Confirm", 300, 60);
 
+		this.promtAddAlarm(cancel, back, next, confirm, model.getAllMedicine());
 	}
 }

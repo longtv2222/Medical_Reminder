@@ -83,19 +83,33 @@ public class DBManager {
 				.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id + " AND med_id = " + med_id + ";");
 
 		while (rs.next()) {
-			time.add(new Alarm(rs.getInt("hour"), rs.getInt("minute"), rs.getDouble("val"), rs.getString("unit"),
-					rs.getString("alarm_name")));
+			time.add(new Alarm(rs.getInt("hour"), rs.getInt("minute"), rs.getDouble("val"),
+					rs.getString("unit"), rs.getString("alarm_name")));
 		}
-
 	}
-	
-	////
+
 	public void loadUserData(ArrayList<User> user_list) throws SQLException {
 		Statement state = conn.createStatement();
 		ResultSet rs = state.executeQuery("SELECT * FROM User");
 		while (rs.next()) {
 			user_list.add(new User(rs.getString("fname") + " " + rs.getString("lname"), rs.getInt("id")));
 			loadUserMedicineData(rs.getInt("id"), user_list.get(user_list.size() - 1).getMedTime());
+		}
+	}
+
+	public void addAlarm(String medName, Alarm alarm) {
+		try {
+			Statement state = conn.createStatement();
+			ResultSet rs = state.executeQuery("SELECT * FROM User WHERE med_name = '" + medName + "';");
+			int user_id = rs.getInt("user_id");
+			int med_id = rs.getInt("med_id");
+
+			Statement state2 = conn.createStatement();
+			state2.execute("INSERT INTO Alarm(user_id,med_id,alarm_name,hour,minute,val,unit) " + "VALUES (" + user_id
+					+ "," + med_id + "," + alarm.getAlarmName() + "," + alarm.getHour() + "," + alarm.getMinute() + ","
+					+ alarm.getVal() + "," + alarm.getUnit() + ");");
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

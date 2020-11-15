@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 public class Model_Controller {
-	public static int user_id = 0;
+	public static int user_id = 0; // Index of current user.
 	private DBManager db;
 	private ArrayList<User> user_list;
 
@@ -45,8 +45,17 @@ public class Model_Controller {
 		return user_list.get(Model_Controller.user_id).getMedTime();
 	}
 
-	public void addAlarm(String name, Alarm alarm) {
-		user_list.get(Model_Controller.user_id).addingAlarm(name, alarm);
-		// Also need to update database.
+	public void addAlarm(String medName, Alarm alarm) {
+		try {
+			db.addAlarm(medName, alarm);
+			user_list = new ArrayList<User>();
+			db.loadUserData(user_list); // Need to look at this again later.
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<String> getAllMedicine() {
+		return user_list.get(Model_Controller.user_id).getMedList();
 	}
 }

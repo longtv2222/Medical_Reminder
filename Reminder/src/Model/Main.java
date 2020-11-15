@@ -3,7 +3,6 @@ package Model;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import View.GUI_Controller;
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,7 +20,5 @@ public class Main extends Application {
 		controller.createGUI();
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		model.checkAlarm(executor);
-
-
 	}
 }

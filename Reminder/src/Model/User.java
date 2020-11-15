@@ -23,6 +23,14 @@ public class User implements Runnable {
 		return this.medTime;
 	}
 
+	public ArrayList<String> getMedList() {
+		ArrayList<String> med = new ArrayList<String>();
+		for (String medName : medTime.keySet()) {
+			med.add(medName);
+		}
+		return med;
+	}
+
 	public String getUserName() {
 		return userName;
 	}
@@ -70,6 +78,10 @@ public class User implements Runnable {
 	@Override
 	public void run() {
 		this.recursiveCheckAlarm();
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }
