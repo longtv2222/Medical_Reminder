@@ -4,6 +4,7 @@
   	-fx-background-color: #D7E7F9;
   	-fx-font-size:20;
 	-fx-font-family: "Roboto";
+	-fx-min-height: 60;
 }
 
 #hover_button {
@@ -12,6 +13,7 @@
   	-fx-background-color: #A6CCFA;
   	-fx-font-size:20;
 	-fx-font-family: "Roboto";
+	-fx-min-height: 60;
 }
 
 #pressed_button {
@@ -20,6 +22,7 @@
   	-fx-background-color: #A6CCFA;
   	-fx-font-size:20;
 	-fx-font-family: "Roboto";
+	-fx-min-height: 60;
 }
 
 #left_panel {
@@ -39,6 +42,7 @@
 }
 
 #subVbox {
+    -fx-padding: 7,0,7,0;
     -fx-background-color: #E5F1FF;
     -fx-spacing:30;
 }
@@ -59,6 +63,7 @@
     -fx-vbar-policy: never;
     -fx-fit-to-width: true;
     -fx-max-height:500;
+    -fx-max-width: 450;
     -fx-background-color:transparent;
 }
 
@@ -100,7 +105,7 @@
 	-fx-min-height: 25px;  
 	-fx-max-width: 25px;  
 	-fx-max-height: 25px;
-	-fx-background-color: #006BCD;
+	-fx-background-color: #2F8DE4;
 }
 
 #toggle_button {
@@ -109,6 +114,6 @@
 	-fx-min-height: 25px;  
 	-fx-max-width: 25px;  
 	-fx-max-height: 25px;
-	-fx-background-color: #C4C4C4;
+	-fx-background-color: #DDE0E1;
 }
 

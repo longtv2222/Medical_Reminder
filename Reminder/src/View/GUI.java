@@ -1,7 +1,6 @@
 package View;
 
 import java.util.ArrayList;
-import Model.Alarm;
 import controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-//Doctor appointment also
+//Main window
 public class GUI {
 	private String css;
 	private BorderPane borderPane;
@@ -28,7 +27,11 @@ public class GUI {
 		css = getClass().getResource("Style.css").toString();
 		this.controller = controller;
 	}
-	
+
+	public GUI() {
+		this.createGUI();
+	}
+
 	private VBox leftPanel(String userName) {
 		VBox vbox = new VBox();
 
@@ -81,7 +84,6 @@ public class GUI {
 		sp.getChildren().addAll(rect, bp);
 		return sp;
 	}
-
 
 	public VBox centerPanel(ArrayList<StackPane> stackPane, String centerTitle) {
 		VBox vbox = new VBox();
