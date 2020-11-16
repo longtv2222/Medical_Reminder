@@ -47,7 +47,7 @@ public class Model_Controller {
 
 	public void addAlarm(String medName, Alarm alarm) {
 		try {
-			db.addAlarm(medName, alarm);
+			db.addAlarm(user_list.get(Model_Controller.user_id).getId(), medName, alarm);
 			user_list = new ArrayList<User>();
 			db.loadUserData(user_list); // Need to look at this again later.
 		} catch (SQLException e) {
@@ -58,4 +58,9 @@ public class Model_Controller {
 	public ArrayList<String> getAllMedicine() {
 		return user_list.get(Model_Controller.user_id).getMedList();
 	}
+
+	public ArrayList<Alarm> getAlarmListOfMed(String medName) {
+		return user_list.get(Model_Controller.user_id).getAlarmListOfMed(medName);
+	}
+
 }

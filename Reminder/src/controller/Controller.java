@@ -10,9 +10,13 @@ import View.UtilityWindow;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Controller implements ModButton, UtilityWindow {
@@ -52,6 +56,7 @@ public class Controller implements ModButton, UtilityWindow {
 		buttons.add(button3);
 
 		Button button4 = this.roundedButton("Remove alarm", 300, 60);
+		button4.setOnMouseClicked(e -> this.removeAlarm());
 		buttons.add(button4);
 
 		Button button5 = this.roundedButton("Add medicine", 300, 60);
@@ -98,8 +103,9 @@ public class Controller implements ModButton, UtilityWindow {
 		ArrayList<StackPane> alarmList = new ArrayList<StackPane>();
 		for (Map.Entry<String, ArrayList<Alarm>> entry : model.getMedTime().entrySet()) {
 			for (Alarm alarm : entry.getValue()) {
-				String alarmTimeName = alarm.getHour() + ":" + alarm.getMinute() + ": " + entry.getKey();
-				String alarmNote = "You need to take " + alarm.getVal() + " " + " of " + entry.getKey();
+				String alarmTimeName = alarm.getHour() + ":" + alarm.getMinute() + ": " + alarm.getAlarmName();
+				String alarmNote = "You need to take " + alarm.getVal() + " " + alarm.getUnit() + " of "
+						+ entry.getKey();
 
 				ToggleButton button = this.toggleButton(alarm);
 				toggleButtonAction(button, alarm);
@@ -141,23 +147,21 @@ public class Controller implements ModButton, UtilityWindow {
 		Button cancel = this.roundedButton("Cancel", 300, 60);
 		Button confirm = this.roundedButton("Confirm", 300, 60);
 
-		ComboBox<String> combo_box = new ComboBox<String>(FXCollections.observableArrayList(model.getAllMedicine()));
-
 		TextField alarmField = new TextField();
 		alarmField.setPrefWidth(150);
-		TextField medField = new TextField();
-		medField.setPrefWidth(150);
-
 		TextField amountField = new TextField();
 		amountField.setPrefWidth(60);
 		TextField unitField = new TextField();
 		unitField.setPrefWidth(60);
 
+		ComboBox<String> combo_box_name = new ComboBox<String>(
+				FXCollections.observableArrayList(model.getAllMedicine()));
 		ComboBox<Integer> combo_box_hour = this.hour_combo_box();
 		ComboBox<Integer> combo_box_minute = this.minute_combo_box();
 
 		Stage stage = new Stage();
-		this.promtAddAlarm(stage, cancel, confirm, combo_box, combo_box_hour, combo_box_minute, alarmField, medField,
+		stage.initModality(Modality.APPLICATION_MODAL);
+		this.promtAddAlarm(stage, cancel, confirm, combo_box_name, combo_box_hour, combo_box_minute, alarmField,
 				amountField, unitField);
 
 		cancel.setOnMouseClicked(e -> stage.close());
@@ -168,18 +172,43 @@ public class Controller implements ModButton, UtilityWindow {
 				String unit = unitField.getText();
 				Alarm alarm = new Alarm(combo_box_hour.getValue(), combo_box_minute.getValue(), amount, unit,
 						alarmField.getText());
-				String medName = medField.getText();
+				String medName = combo_box_name.getValue();
+				model.addAlarm(medName, alarm);
 				stage.close();
 			} catch (NumberFormatException e1) {
 				stage.close();
-				this.promtAddAlarm(stage, cancel, confirm, combo_box, combo_box_hour, combo_box_minute, alarmField,
-						medField, amountField, unitField);
+				alarmField.clear();
+				amountField.clear();
+				unitField.clear();
+				stage.show();
 			}
 
 		});
 	}
 
-	public void confirmActionAddAlarm(String medName, Alarm alarm) {
+	public void removeAlarm() {
+
+		MenuButton menu = new MenuButton();
+		ArrayList<MenuItem> item = new ArrayList<MenuItem>();
+		HBox hbox = new HBox(30);
+		for (String string : model.getAllMedicine()) {
+			
+			
+			
+			MenuItem menuItem = new MenuItem(string);
+			item.add(menuItem);
+			menuItem.setOnAction(e -> {
+				ComboBox<String> combo_box_name = new ComboBox<String>(
+						FXCollections.observableArrayList(model.getAllMedicine()));
+				hbox.getChildren().add(combo_box_name);
+			});
+		}
+		menu.getItems().addAll(item);
+
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		this.removeAlarmWindow(stage, menu, hbox);
 
 	}
+
 }

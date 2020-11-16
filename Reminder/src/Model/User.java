@@ -75,6 +75,23 @@ public class User implements Runnable {
 		}, 0, 60000);
 	}
 
+	public ArrayList<Alarm> getAlarmListOfMed(String medName) {
+		if (medTime.containsKey(medName)) {
+			return medTime.get(medName);
+		} else
+			return null;
+	}
+
+	public void stringRemoveAlarm(String medName, String alarmName) {
+		int index = 0;
+		for (Alarm alarm : medTime.get(medName)) {
+			if (alarm.getAlarmName().equals(alarmName))
+				medTime.get(medName).remove(index);
+			else
+				index++;
+		}
+	}
+
 	@Override
 	public void run() {
 		this.recursiveCheckAlarm();
