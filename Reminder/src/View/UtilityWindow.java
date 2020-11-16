@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public interface UtilityWindow {
@@ -51,6 +52,7 @@ public interface UtilityWindow {
 
 		Scene scene = new Scene(vbox);
 		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.show();
 	}
 
@@ -63,10 +65,12 @@ public interface UtilityWindow {
 		gp.add(combo_box_name, 5, 5);
 		gp.add(buttonBack, 0, 10);
 		gp.add(buttonConfirm, 5, 10);
-		Scene scene = new Scene(gp);
-		stage.setScene(scene);
-		stage.show();
 
+		Scene scene = new Scene(gp);
+
+		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.show();
 	}
 
 }

@@ -161,7 +161,6 @@ public class Controller implements ModButton, UtilityWindow {
 		ComboBox<Integer> combo_box_minute = this.minute_combo_box();
 
 		Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
 		this.promtAddAlarm(stage, cancel, confirm, combo_box_name, combo_box_hour, combo_box_minute, alarmField,
 				amountField, unitField);
 
@@ -182,8 +181,13 @@ public class Controller implements ModButton, UtilityWindow {
 				amountField.clear();
 				unitField.clear();
 				stage.show();
+			} catch (NullPointerException e2) {
+				stage.close();
+				alarmField.clear();
+				amountField.clear();
+				unitField.clear();
+				stage.show();
 			}
-
 		});
 	}
 
@@ -209,11 +213,12 @@ public class Controller implements ModButton, UtilityWindow {
 		menu.getItems().addAll(item);
 
 		Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
+
 		this.removeAlarmWindow(stage, menu, gp, buttonBack, buttonConfirm, combo_box_name);
 
 		buttonBack.setOnMouseClicked(e -> stage.close());
 		buttonConfirm.setOnMouseClicked(e -> {
+			stage.close();
 		});
 	}
 
