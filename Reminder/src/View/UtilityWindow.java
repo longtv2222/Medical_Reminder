@@ -7,6 +7,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -53,12 +54,16 @@ public interface UtilityWindow {
 		stage.show();
 	}
 
-	public default void removeAlarmWindow(Stage stage, MenuButton menu, HBox hbox) {
+	public default void removeAlarmWindow(Stage stage, MenuButton menu, GridPane gp, Button buttonBack,
+			Button buttonConfirm, ComboBox<String> combo_box_name) {
 		menu.setPrefSize(50, 50);
-		hbox.setAlignment(Pos.CENTER);
-		hbox.setPrefSize(500, 500);
-		hbox.getChildren().addAll(menu);
-		Scene scene = new Scene(hbox);
+		gp.setAlignment(Pos.CENTER);
+		gp.setPrefSize(500, 500);
+		gp.add(menu, 0, 5);
+		gp.add(combo_box_name, 5, 5);
+		gp.add(buttonBack, 0, 10);
+		gp.add(buttonConfirm, 5, 10);
+		Scene scene = new Scene(gp);
 		stage.setScene(scene);
 		stage.show();
 

@@ -63,4 +63,8 @@ public class Model_Controller {
 		return user_list.get(Model_Controller.user_id).getAlarmListOfMed(medName);
 	}
 
+	public ArrayList<String> getAlarmNameListOfMed(String medName) {
+		return user_list.get(Model_Controller.user_id).getAlarmNameListOfMed(medName);
+	}
+
 }

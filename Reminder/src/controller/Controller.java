@@ -14,6 +14,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -187,28 +188,39 @@ public class Controller implements ModButton, UtilityWindow {
 	}
 
 	public void removeAlarm() {
-
+		Button buttonBack = this.roundedButton("Back", 100, 100);
+		Button buttonConfirm = this.roundedButton("Confirm", 100, 100);
 		MenuButton menu = new MenuButton();
 		ArrayList<MenuItem> item = new ArrayList<MenuItem>();
-		HBox hbox = new HBox(30);
-		for (String string : model.getAllMedicine()) {
-			
-			
-			
-			MenuItem menuItem = new MenuItem(string);
+
+		GridPane gp = new GridPane();
+		ComboBox<String> combo_box_name = new ComboBox<String>(FXCollections.observableArrayList());
+
+		gp.setVgap(10);
+		gp.setHgap(10);
+
+		for (String medName : model.getAllMedicine()) {
+			MenuItem menuItem = new MenuItem(medName);
 			item.add(menuItem);
 			menuItem.setOnAction(e -> {
-				ComboBox<String> combo_box_name = new ComboBox<String>(
-						FXCollections.observableArrayList(model.getAllMedicine()));
-				hbox.getChildren().add(combo_box_name);
+				this.updateComboBoxAlarmName(combo_box_name, medName);
 			});
 		}
 		menu.getItems().addAll(item);
 
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);
-		this.removeAlarmWindow(stage, menu, hbox);
+		this.removeAlarmWindow(stage, menu, gp, buttonBack, buttonConfirm, combo_box_name);
 
+		buttonBack.setOnMouseClicked(e -> stage.close());
+		buttonConfirm.setOnMouseClicked(e -> {
+		});
+	}
+
+	// Clear combo box and update it with new value.
+	public void updateComboBoxAlarmName(ComboBox<String> combo_box_name, String medName) {
+		combo_box_name.getItems().clear();
+		combo_box_name.getItems().addAll(model.getAlarmNameListOfMed(medName));
 	}
 
 }

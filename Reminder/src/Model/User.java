@@ -92,6 +92,14 @@ public class User implements Runnable {
 		}
 	}
 
+	public ArrayList<String> getAlarmNameListOfMed(String medName) {
+		ArrayList<String> alarmName = new ArrayList<String>();
+		for (Alarm alarm : getAlarmListOfMed(medName)) {
+			alarmName.add(alarm.getAlarmName());
+		}
+		return alarmName;
+	}
+
 	@Override
 	public void run() {
 		this.recursiveCheckAlarm();
