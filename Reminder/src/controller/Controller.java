@@ -7,9 +7,13 @@ import Model.Model_Controller;
 import View.GUI;
 import View.ModButton;
 import View.UtilityWindow;
+import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
@@ -114,13 +118,68 @@ public class Controller implements ModButton, UtilityWindow {
 		gui.getBorderPane().setCenter(gui.centerPanel(alarmList, "Your list of alarm"));
 	}
 
+	public ComboBox<Integer> hour_combo_box() {
+		ArrayList<Integer> hourBox = new ArrayList<Integer>();
+		for (int i = 0; i < 24; i++) {
+			hourBox.add(i);
+		}
+		ComboBox<Integer> combo_box_hour = new ComboBox<Integer>(FXCollections.observableArrayList(hourBox));
+		return combo_box_hour;
+	}
+
+	public ComboBox<Integer> minute_combo_box() {
+		ArrayList<Integer> minuteBox = new ArrayList<Integer>();
+		for (int i = 0; i < 60; i++) {
+			minuteBox.add(i);
+		}
+		ComboBox<Integer> combo_box_minute = new ComboBox<Integer>(FXCollections.observableArrayList(minuteBox));
+		return combo_box_minute;
+	}
+
 	// Add alarm button with existing med name
 	public void addAlarm() {
 		Button cancel = this.roundedButton("Cancel", 300, 60);
-		Button back = this.roundedButton("Back", 300, 60);
-		Button next = this.roundedButton("Next", 300, 60);
 		Button confirm = this.roundedButton("Confirm", 300, 60);
 
-		this.promtAddAlarm(cancel, back, next, confirm, model.getAllMedicine());
+		ComboBox<String> combo_box = new ComboBox<String>(FXCollections.observableArrayList(model.getAllMedicine()));
+
+		TextField alarmField = new TextField();
+		alarmField.setPrefWidth(150);
+		TextField medField = new TextField();
+		medField.setPrefWidth(150);
+
+		TextField amountField = new TextField();
+		amountField.setPrefWidth(60);
+		TextField unitField = new TextField();
+		unitField.setPrefWidth(60);
+
+		ComboBox<Integer> combo_box_hour = this.hour_combo_box();
+		ComboBox<Integer> combo_box_minute = this.minute_combo_box();
+
+		Stage stage = new Stage();
+		this.promtAddAlarm(stage, cancel, confirm, combo_box, combo_box_hour, combo_box_minute, alarmField, medField,
+				amountField, unitField);
+
+		cancel.setOnMouseClicked(e -> stage.close());
+
+		confirm.setOnMouseClicked(e -> {
+			try {
+				double amount = Double.parseDouble(amountField.getText());
+				String unit = unitField.getText();
+				Alarm alarm = new Alarm(combo_box_hour.getValue(), combo_box_minute.getValue(), amount, unit,
+						alarmField.getText());
+				String medName = medField.getText();
+				stage.close();
+			} catch (NumberFormatException e1) {
+				stage.close();
+				this.promtAddAlarm(stage, cancel, confirm, combo_box, combo_box_hour, combo_box_minute, alarmField,
+						medField, amountField, unitField);
+			}
+
+		});
+	}
+
+	public void confirmActionAddAlarm(String medName, Alarm alarm) {
+
 	}
 }

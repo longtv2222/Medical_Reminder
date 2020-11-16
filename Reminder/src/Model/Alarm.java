@@ -3,8 +3,6 @@ package Model;
 import java.time.LocalDateTime;
 
 public class Alarm {
-
-
 	private int hour;
 	private int minute;
 	private double val;
