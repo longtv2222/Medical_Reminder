@@ -63,8 +63,15 @@ public class Model_Controller {
 		return user_list.get(Model_Controller.user_id).getAlarmListOfMed(medName);
 	}
 
-	public ArrayList<String> getAlarmNameListOfMed(String medName) {
-		return user_list.get(Model_Controller.user_id).getAlarmNameListOfMed(medName);
+	public void removeAlarm(int alarm_id) {
+		try {
+			int user_id = user_list.get(Model_Controller.user_id).getId();
+			db.removeAlarm(user_id, alarm_id);
+			user_list = new ArrayList<User>();
+			db.loadUserData(user_list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // Need to look at this again later.
 	}
 
 }

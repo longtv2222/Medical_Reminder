@@ -10,15 +10,16 @@ import View.UtilityWindow;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
@@ -198,10 +199,18 @@ public class Controller implements ModButton, UtilityWindow {
 		ArrayList<MenuItem> item = new ArrayList<MenuItem>();
 
 		GridPane gp = new GridPane();
-		ComboBox<String> combo_box_name = new ComboBox<String>(FXCollections.observableArrayList());
 
-		gp.setVgap(10);
-		gp.setHgap(10);
+		ComboBox<Alarm> combo_box_name = new ComboBox<Alarm>();
+		// Method to display string name of object alarm instead of object.
+		Callback<ListView<Alarm>, ListCell<Alarm>> cellFactory = lv -> new ListCell<Alarm>() {
+			@Override
+			protected void updateItem(Alarm item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty ? "" : item.getAlarmName());
+			}
+		};
+		combo_box_name.setCellFactory(cellFactory);
+		combo_box_name.setButtonCell(cellFactory.call(null));
 
 		for (String medName : model.getAllMedicine()) {
 			MenuItem menuItem = new MenuItem(medName);
@@ -210,22 +219,31 @@ public class Controller implements ModButton, UtilityWindow {
 				this.updateComboBoxAlarmName(combo_box_name, medName);
 			});
 		}
+
 		menu.getItems().addAll(item);
-
 		Stage stage = new Stage();
-
 		this.removeAlarmWindow(stage, menu, gp, buttonBack, buttonConfirm, combo_box_name);
 
 		buttonBack.setOnMouseClicked(e -> stage.close());
 		buttonConfirm.setOnMouseClicked(e -> {
-			stage.close();
+			try {
+				int alarm_id =combo_box_name.getSelectionModel().getSelectedItem().getId();
+				model.removeAlarm(alarm_id);
+				this.viewAlarm();
+				stage.close();
+			} catch (NullPointerException e1) {
+				stage.close();
+				combo_box_name.getItems().clear();
+				stage.show();
+			}
+
 		});
 	}
 
 	// Clear combo box and update it with new value.
-	public void updateComboBoxAlarmName(ComboBox<String> combo_box_name, String medName) {
+	public void updateComboBoxAlarmName(ComboBox<Alarm> combo_box_name, String medName) {
 		combo_box_name.getItems().clear();
-		combo_box_name.getItems().addAll(model.getAlarmNameListOfMed(medName));
+		combo_box_name.getItems().addAll(model.getAlarmListOfMed(medName));
 	}
 
 }

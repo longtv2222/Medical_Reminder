@@ -10,6 +10,17 @@ public class Alarm {
 	private String alarmName;
 	private Ringtone ringtone = new Ringtone();
 	private boolean status;
+	private int id;
+
+	public Alarm(int id, int hour, int minute, double val, String unit, String alarmName) {
+		this.setId(id);
+		this.hour = hour;
+		this.minute = minute;
+		this.val = val;
+		this.unit = unit;
+		this.alarmName = alarmName;
+		this.status = true;
+	}
 
 	public Alarm(int hour, int minute, double val, String unit, String alarmName) {
 		this.hour = hour;
@@ -68,8 +79,13 @@ public class Alarm {
 	public int getMinute() {
 		return this.minute;
 	}
-	
 
-	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 }

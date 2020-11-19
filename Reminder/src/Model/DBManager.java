@@ -83,8 +83,8 @@ public class DBManager {
 				.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id + " AND med_id = " + med_id + ";");
 
 		while (rs.next()) {
-			time.add(new Alarm(rs.getInt("hour"), rs.getInt("minute"), rs.getDouble("val"), rs.getString("unit"),
-					rs.getString("alarm_name")));
+			time.add(new Alarm(rs.getInt("id"), rs.getInt("hour"), rs.getInt("minute"), rs.getDouble("val"),
+					rs.getString("unit"), rs.getString("alarm_name")));
 		}
 	}
 
@@ -105,12 +105,21 @@ public class DBManager {
 			int med_id = rs.getInt("med_id");
 
 			Statement state2 = conn.createStatement();
-			
+
 			state2.execute("INSERT INTO Alarm(user_id,med_id,alarm_name,hour,minute,val,unit) " + "VALUES (" + user_id
 					+ "," + med_id + ",'" + alarm.getAlarmName() + "'," + alarm.getHour() + "," + alarm.getMinute()
 					+ "," + alarm.getVal() + ",'" + alarm.getUnit() + "');");
 		} catch (SQLException e) {
 			System.out.println("Name of the alarm must not contain special character");
+		}
+	}
+
+	public void removeAlarm(int user_id,int alarm_id) {
+		try {
+			Statement state = conn.createStatement();
+			state.execute("DELETE FROM Alarm WHERE id =" + alarm_id + " AND user_id =" + user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package View;
 
+import Model.Alarm;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -57,7 +58,9 @@ public interface UtilityWindow {
 	}
 
 	public default void removeAlarmWindow(Stage stage, MenuButton menu, GridPane gp, Button buttonBack,
-			Button buttonConfirm, ComboBox<String> combo_box_name) {
+			Button buttonConfirm, ComboBox<Alarm> combo_box_name) {
+		gp.setVgap(10);
+		gp.setHgap(10);
 		menu.setPrefSize(50, 50);
 		gp.setAlignment(Pos.CENTER);
 		gp.setPrefSize(500, 500);
