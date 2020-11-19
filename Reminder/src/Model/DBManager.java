@@ -141,4 +141,13 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
+
+	public void addMedicine(int user_id, String medName) {
+		try {
+			Statement state = conn.createStatement();
+			state.execute("INSERT INTO Medicine (user_id,med_name) VALUES (" + user_id + ",'" + medName + "');");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

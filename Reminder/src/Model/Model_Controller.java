@@ -84,4 +84,14 @@ public class Model_Controller {
 		}
 	}
 
+	public void addMedicine(String medName) {
+		try {
+			db.addMedicine(user_list.get(user_id).getId(), medName);
+			user_list = new ArrayList<User>();
+			db.loadUserData(user_list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

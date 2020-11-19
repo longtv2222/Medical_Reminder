@@ -62,6 +62,7 @@ public class Controller implements ModButton, UtilityWindow {
 		buttons.add(button4);
 
 		Button button5 = this.roundedButton("Add medicine", 300, 60);
+		button5.setOnMouseClicked(e -> this.addMedicine());
 		buttons.add(button5);
 
 		Button button6 = this.roundedButton("Remove medicine", 300, 60);
@@ -124,7 +125,7 @@ public class Controller implements ModButton, UtilityWindow {
 		for (String medName : model.getMedTime().keySet()) {
 			alarmList.add(gui.medView(medName));
 		}
-		gui.getBorderPane().setCenter(gui.centerPanel(alarmList, "Your list of alarm"));
+		gui.getBorderPane().setCenter(gui.centerPanel(alarmList, "Your list of medicine"));
 	}
 
 	public ComboBox<Integer> hour_combo_box() {
@@ -269,5 +270,32 @@ public class Controller implements ModButton, UtilityWindow {
 		});
 
 		buttonBack.setOnMouseClicked(e -> stage.close());
+	}
+
+	public void addMedicine() {
+		Button buttonBack = this.roundedButton("Back", 100, 100);
+		Button buttonConfirm = this.roundedButton("Confirm", 100, 100);
+		TextField medName = new TextField();
+		medName.setPrefWidth(200);
+
+		Stage stage = new Stage();
+		GridPane gp = new GridPane();
+		this.addMedicineWindow(stage, gp, buttonBack, buttonConfirm, medName);
+
+		buttonBack.setOnMouseClicked(e -> stage.close());
+		buttonConfirm.setOnMouseClicked(e -> {
+			try {
+				String name = medName.getText();
+				if (!name.trim().isEmpty()) {
+					stage.close();
+					model.addMedicine(name);
+				} else
+					throw new NullPointerException("ERROR");
+
+			} catch (NullPointerException e1) {
+				stage.close();
+				stage.show();
+			}
+		});
 	}
 }

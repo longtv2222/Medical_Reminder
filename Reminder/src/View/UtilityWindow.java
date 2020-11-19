@@ -81,7 +81,19 @@ public interface UtilityWindow {
 
 		gp.setVgap(10);
 		gp.setHgap(10);
-		gp.add(combo_box_med, 2, 2);
+		gp.add(combo_box_med, 6, 2);
+		gp.add(back, 5, 5);
+		gp.add(confirm, 10, 5);
+		Scene scene = new Scene(gp);
+		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.show();
+	}
+
+	public default void addMedicineWindow(Stage stage, GridPane gp, Button back, Button confirm, TextField medName) {
+		gp.setVgap(10);
+		gp.setHgap(10);
+		gp.add(medName, 6, 2);
 		gp.add(back, 5, 5);
 		gp.add(confirm, 10, 5);
 		Scene scene = new Scene(gp);
