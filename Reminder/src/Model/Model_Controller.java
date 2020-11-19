@@ -74,4 +74,14 @@ public class Model_Controller {
 		} // Need to look at this again later.
 	}
 
+	public void removeMedicine(String medName) {
+		try {
+			db.removeMedicine(user_list.get(user_id).getId(), medName);
+			user_list = new ArrayList<User>();
+			db.loadUserData(user_list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

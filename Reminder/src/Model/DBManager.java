@@ -114,7 +114,7 @@ public class DBManager {
 		}
 	}
 
-	public void removeAlarm(int user_id,int alarm_id) {
+	public void removeAlarm(int user_id, int alarm_id) {
 		try {
 			Statement state = conn.createStatement();
 			state.execute("DELETE FROM Alarm WHERE id =" + alarm_id + " AND user_id =" + user_id);
@@ -123,4 +123,22 @@ public class DBManager {
 		}
 	}
 
+	/*
+	 * When we remove medicine, we remove all alarm with that medicine.
+	 */
+	public void removeMedicine(int user_id, String medName) {
+		try {
+			Statement state = conn.createStatement();
+			ResultSet rs = state.executeQuery(
+					"SELECT * FROM Medicine WHERE med_name = '" + medName + "' AND user_id =" + user_id + ";");
+			int med_id = rs.getInt("med_id");
+			// Delete all key constraint first
+			Statement state2 = conn.createStatement();
+			state2.execute("DELETE From Alarm WHERE med_id = " + med_id + " AND user_id = " + user_id);
+			Statement state3 = conn.createStatement();
+			state3.execute("DELETE From Medicine WHERE med_id = " + med_id + " AND user_id = " + user_id + ";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

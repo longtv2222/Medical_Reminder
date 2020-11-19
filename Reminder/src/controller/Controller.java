@@ -65,6 +65,7 @@ public class Controller implements ModButton, UtilityWindow {
 		buttons.add(button5);
 
 		Button button6 = this.roundedButton("Remove medicine", 300, 60);
+		button6.setOnMouseClicked(e -> this.removeMedicine());
 		buttons.add(button6);
 
 		Button button7 = this.roundedButton("More", 300, 60);
@@ -227,7 +228,7 @@ public class Controller implements ModButton, UtilityWindow {
 		buttonBack.setOnMouseClicked(e -> stage.close());
 		buttonConfirm.setOnMouseClicked(e -> {
 			try {
-				int alarm_id =combo_box_name.getSelectionModel().getSelectedItem().getId();
+				int alarm_id = combo_box_name.getSelectionModel().getSelectedItem().getId();
 				model.removeAlarm(alarm_id);
 				this.viewAlarm();
 				stage.close();
@@ -246,4 +247,27 @@ public class Controller implements ModButton, UtilityWindow {
 		combo_box_name.getItems().addAll(model.getAlarmListOfMed(medName));
 	}
 
+	public void removeMedicine() {
+		Button buttonBack = this.roundedButton("Back", 100, 100);
+		Button buttonConfirm = this.roundedButton("Confirm", 100, 100);
+		ComboBox<String> combo_box_med = new ComboBox<String>(
+				FXCollections.observableArrayList(model.getAllMedicine()));
+		Stage stage = new Stage();
+		GridPane gp = new GridPane();
+		this.removeMedicineWindow(stage, gp, buttonBack, buttonConfirm, combo_box_med);
+
+		buttonConfirm.setOnMouseClicked(e -> {
+			try {
+				model.removeMedicine(combo_box_med.getValue());
+				stage.close();
+			} catch (NullPointerException e1) {
+				stage.close();
+				combo_box_med.getItems().clear();
+				stage.show();
+			}
+
+		});
+
+		buttonBack.setOnMouseClicked(e -> stage.close());
+	}
 }
