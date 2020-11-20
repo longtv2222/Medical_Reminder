@@ -63,16 +63,18 @@ public class User implements Runnable {
 	 */
 	public void recursiveCheckAlarm() {
 		Timer time = new Timer();
+
 		time.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
-					for (Alarm iterator : entry.getValue()) {
-						if (iterator.getStatus()) // Check for the status of the alarm, if it is false, it is inactive
-							iterator.notification();
+					for (Alarm alarm : entry.getValue()) {
+						if (alarm.getStatus()) {
+							alarm.notification();
+						}
 					}
 				}
 			}
-		}, 0, 60000);
+		}, 0, 10000);
 	}
 
 	public ArrayList<Alarm> getAlarmListOfMed(String medName) {
@@ -109,4 +111,20 @@ public class User implements Runnable {
 		return id;
 	}
 
+	public void addAlarm(String medName, Alarm alarm) {
+		this.getAlarmListOfMed(medName).add(alarm);
+	}
+
+	public void removeAlarm(int id) {
+		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
+			for (int i = 0; i < entry.getValue().size(); i++) {
+				if (entry.getValue().get(i).getId() == id)
+					entry.getValue().remove(i);
+			}
+		}
+	}
+
+	public void removeMedicine(String medName) {
+		medTime.remove(medName);
+	}
 }

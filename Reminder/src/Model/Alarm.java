@@ -6,11 +6,12 @@ public class Alarm {
 	private int hour;
 	private int minute;
 	private double val;
-	private String unit;
-	private String alarmName;
 	private Ringtone ringtone = new Ringtone();
 	private boolean status;
 	private int id;
+
+	private String unit;
+	private String alarmName;
 
 	public Alarm(int id, int hour, int minute, double val, String unit, String alarmName) {
 		this.setId(id);
@@ -61,7 +62,6 @@ public class Alarm {
 			LocalDateTime now = LocalDateTime.now();
 			int curr_hour = now.getHour();
 			int curr_minute = now.getMinute();
-
 			if (hour == curr_hour && minute == curr_minute) {
 				ringtone.play();
 				Thread.sleep(30000); // Play for 30s then stop. Need to have a way to enable user to stop the alarm

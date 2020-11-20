@@ -46,13 +46,10 @@ public class Model_Controller {
 	}
 
 	public void addAlarm(String medName, Alarm alarm) {
-		try {
-			db.addAlarm(user_list.get(Model_Controller.user_id).getId(), medName, alarm);
-			user_list = new ArrayList<User>();
-			db.loadUserData(user_list); // Need to look at this again later.
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// Adding an alarm to db however we still don't know the id of it, we set it
+		// inside addAlarm method.
+		db.addAlarm(user_list.get(Model_Controller.user_id).getId(), medName, alarm);
+		user_list.get(Model_Controller.user_id).addAlarm(medName, alarm);
 	}
 
 	public ArrayList<String> getAllMedicine() {
@@ -64,34 +61,19 @@ public class Model_Controller {
 	}
 
 	public void removeAlarm(int alarm_id) {
-		try {
-			int user_id = user_list.get(Model_Controller.user_id).getId();
-			db.removeAlarm(user_id, alarm_id);
-			user_list = new ArrayList<User>();
-			db.loadUserData(user_list);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} // Need to look at this again later.
+		int user_id = user_list.get(Model_Controller.user_id).getId();
+		db.removeAlarm(user_id, alarm_id);
+		user_list.get(Model_Controller.user_id).removeAlarm(alarm_id);
 	}
 
 	public void removeMedicine(String medName) {
-		try {
-			db.removeMedicine(user_list.get(user_id).getId(), medName);
-			user_list = new ArrayList<User>();
-			db.loadUserData(user_list);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		db.removeMedicine(user_list.get(user_id).getId(), medName);
+		user_list.get(Model_Controller.user_id).removeMedicine(medName);
 	}
 
 	public void addMedicine(String medName) {
-		try {
-			db.addMedicine(user_list.get(user_id).getId(), medName);
-			user_list = new ArrayList<User>();
-			db.loadUserData(user_list);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		db.addMedicine(user_list.get(user_id).getId(), medName);
+		user_list.get(user_id).addMedicine(medName);
 	}
 
 }

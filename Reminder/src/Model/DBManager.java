@@ -109,8 +109,15 @@ public class DBManager {
 			state2.execute("INSERT INTO Alarm(user_id,med_id,alarm_name,hour,minute,val,unit) " + "VALUES (" + user_id
 					+ "," + med_id + ",'" + alarm.getAlarmName() + "'," + alarm.getHour() + "," + alarm.getMinute()
 					+ "," + alarm.getVal() + ",'" + alarm.getUnit() + "');");
+
+			Statement state3 = conn.createStatement();
+			ResultSet rs2 = state3.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id + " AND med_id = "
+					+ med_id + " AND alarm_name = '" + alarm.getAlarmName() + "' AND hour = " + alarm.getHour()
+					+ " AND minute =" + alarm.getMinute() + " AND val = " + alarm.getVal() + " AND unit = '"
+					+ alarm.getUnit() + "';");
+			alarm.setId(rs2.getInt("id"));
 		} catch (SQLException e) {
-			System.out.println("Name of the alarm must not contain special character");
+			e.printStackTrace();
 		}
 	}
 

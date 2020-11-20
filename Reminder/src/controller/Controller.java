@@ -2,6 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import Model.Alarm;
 import Model.Model_Controller;
 import View.GUI;
@@ -25,8 +28,11 @@ public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
 	private Model_Controller model;
 
+
 	public Controller(Model_Controller model) {
 		this.model = model;
+		this.createGUI();
+
 	}
 
 	public void createGUI() {

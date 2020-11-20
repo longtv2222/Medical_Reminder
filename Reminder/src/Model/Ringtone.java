@@ -8,7 +8,7 @@ public class Ringtone {
 	private File location;
 	private AudioClip audio;
 
-	Ringtone() {
+	public Ringtone() {
 		this.location = new File("Ringtone\\Default.mp3");
 		Media b = new Media(location.toURI().toString());
 		audio = new AudioClip(b.getSource());
