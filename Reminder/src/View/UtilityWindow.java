@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -97,6 +98,15 @@ public interface UtilityWindow {
 		gp.add(back, 5, 5);
 		gp.add(confirm, 10, 5);
 		Scene scene = new Scene(gp);
+		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.show();
+	}
+
+	public default void alarmRingWindow(Stage stage, BorderPane bp, Button confirmButton, Label label) {
+		bp.setCenter(label);
+		bp.setBottom(confirmButton);
+		Scene scene = new Scene(bp);
 		stage.setScene(scene);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.show();

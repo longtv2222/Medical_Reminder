@@ -16,13 +16,7 @@ public class Main extends Application {
 	public void start(Stage arg0) throws Exception {
 		Model_Controller model = new Model_Controller();
 		Controller controller = new Controller(model);
-		ExecutorService executor = Executors.newSingleThreadExecutor();
 
-		executor.execute(model.get_UserList().get(Model_Controller.user_id));
-
-//		for (Alarm alarm : model.get_UserList().get(Model_Controller.user_id).getAlarmListOfMed("abba")) {
-//			System.out.println(alarm.getHour() + "   " + alarm.getMinute());
-//		}
 
 	}
 

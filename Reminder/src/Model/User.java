@@ -69,7 +69,7 @@ public class User implements Runnable {
 				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 					for (Alarm alarm : entry.getValue()) {
 						if (alarm.getStatus()) {
-							alarm.notification();
+							alarm.notification(entry.getKey());
 						}
 					}
 				}

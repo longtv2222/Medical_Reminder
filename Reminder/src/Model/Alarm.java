@@ -57,18 +57,12 @@ public class Alarm {
 		this.minute = minute;
 	}
 
-	public void notification() {
-		try {
-			LocalDateTime now = LocalDateTime.now();
-			int curr_hour = now.getHour();
-			int curr_minute = now.getMinute();
-			if (hour == curr_hour && minute == curr_minute) {
-				ringtone.play();
-				Thread.sleep(30000); // Play for 30s then stop. Need to have a way to enable user to stop the alarm
-				ringtone.stop();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public void notification(String medName) {
+		LocalDateTime now = LocalDateTime.now();
+		int curr_hour = now.getHour();
+		int curr_minute = now.getMinute();
+		if (hour == curr_hour && minute == curr_minute) {
+			ringtone.play();
 		}
 	}
 

@@ -27,12 +27,12 @@ import javafx.util.Callback;
 public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
 	private Model_Controller model;
-
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public Controller(Model_Controller model) {
 		this.model = model;
 		this.createGUI();
-
+		executor.execute(model.get_UserList().get(Model_Controller.user_id));
 	}
 
 	public void createGUI() {
