@@ -19,9 +19,5 @@ public class Main extends Application {
 		Model_Controller model = new Model_Controller();
 		Controller controller = new Controller(model);
 		controller.createGUI();
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		model.checkAlarm(executor);
-
-
 	}
 }

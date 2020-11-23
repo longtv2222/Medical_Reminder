@@ -3,7 +3,7 @@ package Model;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class User implements Runnable {
+public class User {
 	// Name of User
 	private String userName;
 	// id of user.
@@ -61,20 +61,16 @@ public class User implements Runnable {
 	 * This function check if you have an alarm at current time or not every 30
 	 * seconds.
 	 */
-	public void recursiveCheckAlarm() {
-		Timer time = new Timer();
-
-		time.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
-					for (Alarm alarm : entry.getValue()) {
-						if (alarm.getStatus()) {
-							alarm.notification(entry.getKey());
-						}
-					}
+	public boolean recursiveCheckAlarm() {
+		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
+			for (Alarm alarm : entry.getValue()) {
+				if (alarm.getStatus()) {
+					if (alarm.notification(entry.getKey()))
+						return true;
 				}
 			}
-		}, 0, 10000);
+		}
+		return false;
 	}
 
 	public ArrayList<Alarm> getAlarmListOfMed(String medName) {
@@ -102,10 +98,10 @@ public class User implements Runnable {
 		return alarmName;
 	}
 
-	@Override
-	public void run() {
-		this.recursiveCheckAlarm();
-	}
+//	@Override
+//	public void run() {
+//		this.recursiveCheckAlarm();
+//	}
 
 	public int getId() {
 		return id;

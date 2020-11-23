@@ -2,6 +2,7 @@ package View;
 
 import java.util.ArrayList;
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +27,7 @@ public class GUI {
 		setBorderPane(new BorderPane());
 		css = getClass().getResource("Style.css").toString();
 		this.controller = controller;
+		controller.run();
 	}
 
 	public GUI() {

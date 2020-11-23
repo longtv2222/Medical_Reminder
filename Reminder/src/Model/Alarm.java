@@ -57,13 +57,15 @@ public class Alarm {
 		this.minute = minute;
 	}
 
-	public void notification(String medName) {
+	public boolean notification(String medName) {
 		LocalDateTime now = LocalDateTime.now();
 		int curr_hour = now.getHour();
 		int curr_minute = now.getMinute();
 		if (hour == curr_hour && minute == curr_minute) {
 			ringtone.play();
+			return true;
 		}
+		return false;
 	}
 
 	public int getHour() {

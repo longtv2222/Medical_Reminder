@@ -2,14 +2,15 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Model.Alarm;
 import Model.Model_Controller;
 import View.GUI;
 import View.ModButton;
 import View.UtilityWindow;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,12 +28,31 @@ import javafx.util.Callback;
 public class Controller implements ModButton, UtilityWindow {
 	private GUI gui;
 	private Model_Controller model;
-	private ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public Controller(Model_Controller model) {
 		this.model = model;
-		this.createGUI();
-		executor.execute(model.get_UserList().get(Model_Controller.user_id));
+
+	}
+
+	public void run() {
+		Timer time = new Timer();
+		time.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				if (model.checkAlarm()) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Stage stage = new Stage();
+							stage.show();
+						}
+					});
+				}
+			}
+		}, 0, 10000);
+	}
+
+	public Model_Controller getModel() {
+		return this.model;
 	}
 
 	public void createGUI() {
