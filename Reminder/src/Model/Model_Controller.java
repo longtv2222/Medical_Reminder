@@ -69,7 +69,7 @@ public class Model_Controller {
 		user_list.get(user_id).addMedicine(medName);
 	}
 
-	public boolean checkAlarm() {
+	public Ringtone checkAlarm() {
 		return user_list.get(user_id).recursiveCheckAlarm();
 	}
 

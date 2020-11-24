@@ -61,16 +61,17 @@ public class User {
 	 * This function check if you have an alarm at current time or not every 30
 	 * seconds.
 	 */
-	public boolean recursiveCheckAlarm() {
+	public Ringtone recursiveCheckAlarm() {
 		for (Map.Entry<String, ArrayList<Alarm>> entry : medTime.entrySet()) {
 			for (Alarm alarm : entry.getValue()) {
 				if (alarm.getStatus()) {
-					if (alarm.notification(entry.getKey()))
-						return true;
+					Ringtone rt = alarm.notification(entry.getKey());
+					if (rt != null)
+						return rt;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public ArrayList<Alarm> getAlarmListOfMed(String medName) {

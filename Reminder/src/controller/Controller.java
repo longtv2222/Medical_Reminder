@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import Model.Alarm;
 import Model.Model_Controller;
+import Model.Ringtone;
 import View.GUI;
 import View.ModButton;
 import View.UtilityWindow;
@@ -38,15 +39,17 @@ public class Controller implements ModButton, UtilityWindow {
 		Timer time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				if (model.checkAlarm()) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						Ringtone rt = model.checkAlarm();
+						if (rt != null) {
 							Stage stage = new Stage();
 							stage.show();
+							rt.play();
 						}
-					});
-				}
+					}
+				});
 			}
 		}, 0, 10000);
 	}
