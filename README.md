@@ -1,4 +1,4 @@
-# Medical-Reminder (Ongoing)
+# Medical-Reminder 
 
 Ever have trouble remembering when to take your medicine or when to have an appointment with your doctor?
 
