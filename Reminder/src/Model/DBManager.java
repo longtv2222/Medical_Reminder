@@ -66,8 +66,9 @@ public class DBManager {
 	// Load user medicine into hashmap of user and call loadAlarmMedicine method.
 	private void loadUserMedicineData(int user_id, ConcurrentHashMap<String, ArrayList<Alarm>> concurrentHashMap)
 			throws SQLException {
-		Statement state = conn.createStatement();
-		ResultSet rs = state.executeQuery("SELECT * FROM Medicine WHERE user_id = " + user_id);
+		PreparedStatement state = conn.prepareStatement("SELECT * FROM Medicine WHERE user_id = ?");
+		state.setInt(1, user_id);
+		ResultSet rs = state.executeQuery();
 
 		while (rs.next()) {
 			concurrentHashMap.put(rs.getString("med_name"), new ArrayList<Alarm>()); // Create new key and intialize
@@ -78,9 +79,10 @@ public class DBManager {
 	}
 
 	private void loadAlarmMedicineData(ArrayList<Alarm> time, int user_id, int med_id) throws SQLException {
-		Statement state = conn.createStatement();
-		ResultSet rs = state
-				.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id + " AND med_id = " + med_id + ";");
+		PreparedStatement state = conn.prepareStatement("SELECT * FROM Alarm WHERE user_id = ? AND med_id = ?;");
+		state.setInt(1, user_id);
+		state.setInt(2, med_id);
+		ResultSet rs = state.executeQuery();
 
 		while (rs.next()) {
 			time.add(new Alarm(rs.getInt("id"), rs.getInt("hour"), rs.getInt("minute"), rs.getDouble("val"),
@@ -104,18 +106,20 @@ public class DBManager {
 					"SELECT * FROM Medicine WHERE med_name = '" + medName + "' AND user_id =" + user_id + ";");
 			int med_id = rs.getInt("med_id");
 
-			Statement state2 = conn.createStatement();
-
-			state2.execute("INSERT INTO Alarm(user_id,med_id,alarm_name,hour,minute,val,unit) " + "VALUES (" + user_id
-					+ "," + med_id + ",'" + alarm.getAlarmName() + "'," + alarm.getHour() + "," + alarm.getMinute()
-					+ "," + alarm.getVal() + ",'" + alarm.getUnit() + "');");
+			PreparedStatement state2 = conn.prepareStatement(
+					"INSERT INTO Alarm(user_id, med_id, alarm_name, hour, minute, val , unit) VALUES (?,?,?,?,?,?,?)");
+			state2.setInt(1, user_id);
+			state2.setInt(2, med_id);
+			state2.setString(3, alarm.getAlarmName());
+			state2.setInt(4, alarm.getHour());
+			state2.setInt(5, alarm.getMinute());
+			state2.setDouble(6, alarm.getVal());
+			state2.setString(7, alarm.getUnit());
+			state2.execute();
 
 			Statement state3 = conn.createStatement();
-			ResultSet rs2 = state3.executeQuery("SELECT * FROM Alarm WHERE user_id = " + user_id + " AND med_id = "
-					+ med_id + " AND alarm_name = '" + alarm.getAlarmName() + "' AND hour = " + alarm.getHour()
-					+ " AND minute =" + alarm.getMinute() + " AND val = " + alarm.getVal() + " AND unit = '"
-					+ alarm.getUnit() + "';");
-			alarm.setId(rs2.getInt("id"));
+			ResultSet rs2 = state3.executeQuery("SELECT last_insert_rowid();");
+			alarm.setId(rs2.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,8 +127,10 @@ public class DBManager {
 
 	public void removeAlarm(int user_id, int alarm_id) {
 		try {
-			Statement state = conn.createStatement();
-			state.execute("DELETE FROM Alarm WHERE id =" + alarm_id + " AND user_id =" + user_id);
+			PreparedStatement state = conn.prepareStatement("DELETE FROM Alarm WHERE id = ? AND user_id = ?");
+			state.setInt(1, alarm_id);
+			state.setInt(2, user_id);
+			state.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -135,15 +141,22 @@ public class DBManager {
 	 */
 	public void removeMedicine(int user_id, String medName) {
 		try {
-			Statement state = conn.createStatement();
-			ResultSet rs = state.executeQuery(
-					"SELECT * FROM Medicine WHERE med_name = '" + medName + "' AND user_id =" + user_id + ";");
+			PreparedStatement state = conn
+					.prepareStatement("SELECT * FROM Medicine WHERE med_name = ? AND user_id = ?;");
+			state.setString(1, medName);
+			state.setInt(2, user_id);
+			ResultSet rs = state.executeQuery();
 			int med_id = rs.getInt("med_id");
 			// Delete all key constraint first
-			Statement state2 = conn.createStatement();
-			state2.execute("DELETE From Alarm WHERE med_id = " + med_id + " AND user_id = " + user_id);
-			Statement state3 = conn.createStatement();
-			state3.execute("DELETE From Medicine WHERE med_id = " + med_id + " AND user_id = " + user_id + ";");
+			PreparedStatement state2 = conn.prepareStatement("DELETE From Alarm WHERE med_id = ? AND user_id = ?;");
+			state2.setInt(1, med_id);
+			state2.setInt(2, user_id);
+			state2.execute();
+
+			PreparedStatement state3 = conn.prepareStatement("DELETE From Medicine WHERE med_id = ? AND user_id = ?;");
+			state3.setInt(1, med_id);
+			state3.setInt(2, user_id);
+			state3.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -151,8 +164,10 @@ public class DBManager {
 
 	public void addMedicine(int user_id, String medName) {
 		try {
-			Statement state = conn.createStatement();
-			state.execute("INSERT INTO Medicine (user_id,med_name) VALUES (" + user_id + ",'" + medName + "');");
+			PreparedStatement state = conn.prepareStatement("INSERT INTO Medicine (user_id,med_name) VALUES (?, ?)");
+			state.setInt(1, user_id);
+			state.setString(2, medName);
+			state.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
