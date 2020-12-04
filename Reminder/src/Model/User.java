@@ -24,11 +24,7 @@ public class User {
 	}
 
 	public ArrayList<String> getMedList() {
-		ArrayList<String> med = new ArrayList<String>();
-		for (String medName : medTime.keySet()) {
-			med.add(medName);
-		}
-		return med;
+		return new ArrayList<String>(medTime.keySet());
 	}
 
 	public String getUserName() {
@@ -81,16 +77,6 @@ public class User {
 			return null;
 	}
 
-	public void stringRemoveAlarm(String medName, String alarmName) {
-		int index = 0;
-		for (Alarm alarm : medTime.get(medName)) {
-			if (alarm.getAlarmName().equals(alarmName))
-				medTime.get(medName).remove(index);
-			else
-				index++;
-		}
-	}
-
 	public ArrayList<String> getAlarmNameListOfMed(String medName) {
 		ArrayList<String> alarmName = new ArrayList<String>();
 		for (Alarm alarm : getAlarmListOfMed(medName)) {
@@ -98,11 +84,6 @@ public class User {
 		}
 		return alarmName;
 	}
-
-//	@Override
-//	public void run() {
-//		this.recursiveCheckAlarm();
-//	}
 
 	public int getId() {
 		return id;
