@@ -1,22 +1,21 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Alarm {
-	private int hour;
-	private int minute;
+	private int id;
 	private double val;
 	private Ringtone ringtone = new Ringtone();
 	private boolean status;
-	private int id;
-
+	private LocalDateTime time;
 	private String unit;
 	private String alarmName;
 
 	public Alarm(int id, int hour, int minute, double val, String unit, String alarmName) {
+		setAlarm(hour, minute);
 		this.setId(id);
-		this.hour = hour;
-		this.minute = minute;
 		this.val = val;
 		this.unit = unit;
 		this.alarmName = alarmName;
@@ -24,8 +23,7 @@ public class Alarm {
 	}
 
 	public Alarm(int hour, int minute, double val, String unit, String alarmName) {
-		this.hour = hour;
-		this.minute = minute;
+		setAlarm(hour, minute);
 		this.val = val;
 		this.unit = unit;
 		this.alarmName = alarmName;
@@ -52,27 +50,24 @@ public class Alarm {
 		return this.alarmName;
 	}
 
+	/*
+	 * Set LocalDateTime Object with today's date with specified hour and minute.
+	 * Ignore units that are smaller than minutes.
+	 */
 	public void setAlarm(int hour, int minute) {
-		this.hour = hour;
-		this.minute = minute;
+		time = LocalDateTime.now().with(LocalTime.of(hour, minute)).truncatedTo(ChronoUnit.MINUTES);
 	}
 
+	/*
+	 * Check if the current time is equal to alarm time. If it's equal, return
+	 * ringtone object. Else return null
+	 */
 	public Ringtone notification(String medName) {
-		LocalDateTime now = LocalDateTime.now();
-		int curr_hour = now.getHour();
-		int curr_minute = now.getMinute();
-		if (hour == curr_hour && minute == curr_minute) {
+		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+		if (time.isEqual(now)) {
 			return ringtone;
 		}
 		return null;
-	}
-
-	public int getHour() {
-		return this.hour;
-	}
-
-	public int getMinute() {
-		return this.minute;
 	}
 
 	public int getId() {
@@ -81,6 +76,14 @@ public class Alarm {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getHour() {
+		return time.getHour();
+	}
+
+	public int getMinute() {
+		return time.getMinute();
 	}
 
 }
