@@ -7,7 +7,7 @@ Medical reminder is a desktop application that will notify you whenever you need
 
 ## Built With
 - [JavaFX](https://openjfx.io/openjfx-docs/) - User Interface
-- [SQLite](https://www.sqlite.org/index.html) - Database
+- [SQLite](https://www.sqlite.org/index.html) - Embedded Database
 - [Maven](https://maven.apache.org/) - Dependency Management
 
 ## Getting Started
