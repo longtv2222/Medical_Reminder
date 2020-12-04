@@ -6,7 +6,7 @@ Don't worry because medical reminder is here!
 Medical reminder is a desktop application that will notify you whenever you need to take the medicine. By using medical reminder, you will have the option of specifying how many pills, doses of medicine you need to take each day.
 
 ## Built With
-- [JavaFx](https://openjfx.io/openjfx-docs/) - User Interface
+- [JavaFX](https://openjfx.io/openjfx-docs/) - User Interface
 - [SQLite](https://www.sqlite.org/index.html) - Database
 - [Maven](https://maven.apache.org/) - Dependency Management
 
