@@ -22,7 +22,7 @@ Medical reminder is a desktop application that will notify you whenever you need
    
 2. Go into the desired folder:
 
-    ```cd /Medical_Reminder/Reminder/```
+    ```cd Medical_Reminder/Reminder/```
 
 3. Run the following command:
 
