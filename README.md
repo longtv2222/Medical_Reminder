@@ -29,4 +29,4 @@ Medical reminder is a desktop application that will notify you whenever you need
     ```mvn javafx:run```
     
 ## License
-- This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/longtv2222/Medical_Reminder/blob/master/LICENSE) file for details
+- This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/longtv2222/Medical_Reminder/blob/master/LICENSE) file for more details.
