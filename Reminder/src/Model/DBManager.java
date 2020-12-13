@@ -12,7 +12,8 @@ public class DBManager {
 	}
 
 	public static Connection dbConnector() {
-		try (Connection conn = DriverManager.getConnection("jdbc:sqlite:DBSM.sqlite")) {
+		try {
+			Connection conn = DriverManager.getConnection("jdbc:sqlite:DBSM.sqlite");
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
