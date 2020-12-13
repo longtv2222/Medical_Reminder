@@ -2,7 +2,6 @@ package View;
 
 import java.util.ArrayList;
 import controller.Controller;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

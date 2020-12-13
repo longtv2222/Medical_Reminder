@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 //This class is responsible for creating tables if tables haven't been created.
 public class DBManager {
 
-	private static Connection conn = null;
-
 	public DBManager() throws ClassNotFoundException, SQLException {
 		this.getConnection();
 	}
@@ -25,31 +23,33 @@ public class DBManager {
 
 	public void getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
-		conn = dbConnector();
-		initialise();
+		try (Connection conn = dbConnector()) {
+			initialise(conn);
+		}
+
 	}
 
-	private void initialise() throws SQLException {
-		dataBaseSetting();
-		createAlarmTable();
-		createMedicineTable();
-		createUserTable();
+	private void initialise(Connection conn) throws SQLException {
+		dataBaseSetting(conn);
+		createAlarmTable(conn);
+		createMedicineTable(conn);
+		createUserTable(conn);
 	}
 
-	private void dataBaseSetting() throws SQLException {
+	private void dataBaseSetting(Connection conn) throws SQLException {
 		Statement state = conn.createStatement();
 		state.execute("PRAGMA foreign_keys = 1");
 	}
 
 	// If table hasn't existed, create it
-	private void createMedicineTable() throws SQLException {
+	private void createMedicineTable(Connection conn) throws SQLException {
 		Statement state = conn.createStatement();
 		state.execute(
 				"CREATE TABLE if not exists Medicine(med_id integer, user_id integer, med_name varchar(60), primary key(med_id), FOREIGN KEY(user_id) REFERENCES User(id));");
 	}
 
 	// If table hasn't existed, create it
-	private void createAlarmTable() throws SQLException {
+	private void createAlarmTable(Connection conn) throws SQLException {
 		Statement state = conn.createStatement();
 		state.execute(
 				"CREATE TABLE if not exists Alarm(id integer,user_id integer, med_id integer, alarm_name varchar(60),hour INTEGER, minute Integer, val INTEGER, unit varchar(5), primary key(id),"
@@ -57,15 +57,15 @@ public class DBManager {
 	}
 
 	// If table hasn't existed, create it
-	private void createUserTable() throws SQLException {
+	private void createUserTable(Connection conn) throws SQLException {
 		Statement state = conn.createStatement();
 		state.execute(
 				"CREATE TABLE if not exists User(id integer,fname varchar(60),lName varchar(60), primary key(id));");
 	}
 
 	// Load user medicine into hashmap of user and call loadAlarmMedicine method.
-	private void loadUserMedicineData(int user_id, ConcurrentHashMap<String, ArrayList<Alarm>> concurrentHashMap)
-			throws SQLException {
+	private void loadUserMedicineData(int user_id, ConcurrentHashMap<String, ArrayList<Alarm>> concurrentHashMap,
+			Connection conn) throws SQLException {
 		PreparedStatement state = conn.prepareStatement("SELECT * FROM Medicine WHERE user_id = ?");
 		state.setInt(1, user_id);
 		ResultSet rs = state.executeQuery();
@@ -74,11 +74,12 @@ public class DBManager {
 			concurrentHashMap.put(rs.getString("med_name"), new ArrayList<Alarm>()); // Create new key and intialize
 																						// alarm at this key.
 			ArrayList<Alarm> time = concurrentHashMap.get(rs.getString("med_name"));
-			loadAlarmMedicineData(time, user_id, rs.getInt("med_id"));
+			loadAlarmMedicineData(time, user_id, rs.getInt("med_id"), conn);
 		}
 	}
 
-	private void loadAlarmMedicineData(ArrayList<Alarm> time, int user_id, int med_id) throws SQLException {
+	private void loadAlarmMedicineData(ArrayList<Alarm> time, int user_id, int med_id, Connection conn)
+			throws SQLException {
 		PreparedStatement state = conn.prepareStatement("SELECT * FROM Alarm WHERE user_id = ? AND med_id = ?;");
 		state.setInt(1, user_id);
 		state.setInt(2, med_id);
@@ -91,16 +92,18 @@ public class DBManager {
 	}
 
 	public void loadUserData(ArrayList<User> user_list) throws SQLException {
-		Statement state = conn.createStatement();
-		ResultSet rs = state.executeQuery("SELECT * FROM User");
-		while (rs.next()) {
-			user_list.add(new User(rs.getString("fname") + " " + rs.getString("lname"), rs.getInt("id")));
-			loadUserMedicineData(rs.getInt("id"), user_list.get(user_list.size() - 1).getMedTime());
+		try (Connection conn = dbConnector()) {
+			Statement state = conn.createStatement();
+			ResultSet rs = state.executeQuery("SELECT * FROM User");
+			while (rs.next()) {
+				user_list.add(new User(rs.getString("fname") + " " + rs.getString("lname"), rs.getInt("id")));
+				loadUserMedicineData(rs.getInt("id"), user_list.get(user_list.size() - 1).getMedTime(), conn);
+			}
 		}
 	}
 
 	public void addAlarm(int user_id, String medName, Alarm alarm) {
-		try {
+		try (Connection conn = dbConnector()) {
 			Statement state = conn.createStatement();
 			ResultSet rs = state.executeQuery(
 					"SELECT * FROM Medicine WHERE med_name = '" + medName + "' AND user_id =" + user_id + ";");
@@ -126,7 +129,7 @@ public class DBManager {
 	}
 
 	public void removeAlarm(int user_id, int alarm_id) {
-		try {
+		try (Connection conn = dbConnector()) {
 			PreparedStatement state = conn.prepareStatement("DELETE FROM Alarm WHERE id = ? AND user_id = ?");
 			state.setInt(1, alarm_id);
 			state.setInt(2, user_id);
@@ -140,7 +143,7 @@ public class DBManager {
 	 * When we remove medicine, we remove all alarm with that medicine.
 	 */
 	public void removeMedicine(int user_id, String medName) {
-		try {
+		try (Connection conn = dbConnector()) {
 			PreparedStatement state = conn
 					.prepareStatement("SELECT * FROM Medicine WHERE med_name = ? AND user_id = ?;");
 			state.setString(1, medName);
@@ -163,7 +166,7 @@ public class DBManager {
 	}
 
 	public void addMedicine(int user_id, String medName) {
-		try {
+		try (Connection conn = dbConnector()) {
 			PreparedStatement state = conn.prepareStatement("INSERT INTO Medicine (user_id,med_name) VALUES (?, ?)");
 			state.setInt(1, user_id);
 			state.setString(2, medName);
