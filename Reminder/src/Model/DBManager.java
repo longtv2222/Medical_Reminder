@@ -34,6 +34,7 @@ public class DBManager {
 		createAlarmTable(conn);
 		createMedicineTable(conn);
 		createUserTable(conn);
+		createTableFrequency(conn);
 	}
 
 	private void dataBaseSetting(Connection conn) throws SQLException {
@@ -54,6 +55,13 @@ public class DBManager {
 		state.execute(
 				"CREATE TABLE if not exists Alarm(id integer,user_id integer, med_id integer, alarm_name varchar(60),hour INTEGER, minute Integer, val INTEGER, unit varchar(5), primary key(id),"
 						+ "FOREIGN KEY(med_id) REFERENCES Medicine(med_id),FOREIGN KEY(user_id) REFERENCES User(id));");
+	}
+
+	private void createTableFrequency(Connection conn) throws SQLException {
+		Statement state = conn.createStatement();
+		state.execute(
+				"CREATE TABLE if not exists Alarm_Freq(id integer, monday integer, tuesday integer, wednesday integer, thursday integer, friday integer, saturday integer, sunday integer,"
+						+ "FOREIGN KEY(id) REFERENCES Alarm(id));");
 	}
 
 	// If table hasn't existed, create it
