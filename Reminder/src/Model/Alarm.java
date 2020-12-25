@@ -12,6 +12,7 @@ public class Alarm {
 	private LocalDateTime time;
 	private String unit;
 	private String alarmName;
+	//Save data frequency
 
 	public Alarm(int id, int hour, int minute, double val, String unit, String alarmName) {
 		setAlarm(hour, minute);
@@ -63,7 +64,7 @@ public class Alarm {
 	 * ringtone object. Else return null
 	 */
 	public Ringtone notification(String medName) {
-		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); //Need to check for day as well
 		if (time.isEqual(now)) {
 			return ringtone;
 		}
