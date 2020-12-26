@@ -13,7 +13,7 @@ Medical reminder is a desktop application that will notify you whenever you need
 ## Getting Started
 
 ### Prerequisite
-- Make sure you have the latest version of [Java](https://www.java.com/en/) and [Maven](https://maven.apache.org/download.cgi) in your machine.
+- Make sure you have at least [Java 8](https://www.java.com/en/) and [Maven](https://maven.apache.org/download.cgi) in your machine.
 
 ### How to run the program using command line?
 1. Clone the repository:
